@@ -1,0 +1,38 @@
+#map-container {
+  position: relative;
+  width:100vh;
+  height:100vh;
+}
+
+#player {
+  position:absolute;
+  width:32px;
+  height:32px;
+  background:url(soldier-sprite.png);
+  border:1px solid red;
+}
+
+#player.resting {
+  background-position-x:64px;
+  background-position-y:128px;
+}
+
+#player.goleft {
+  background-position-x:64px;
+  background-position-y:96px;
+}
+
+#player.goright {
+  background-position-x:64px;
+  background-position-y:64px;
+}
+
+@keyframes jump {
+  0%   {transform: translateY(0px)}
+  100% {transform: translateY(-100px)}
+}
+
+.jump {
+  transform-origin: 0 0;
+  animation: jump .4s ease-out alternate 2;
+}
