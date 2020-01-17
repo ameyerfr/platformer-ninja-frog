@@ -1,230 +1,126 @@
 let player = document.getElementById('player');
 
-let playerPositionOnMAP = { left:0, bottom:0, reachedTop:false }
+const keyState = {};
+//  {ArrowRight: false, ArrowLeft: false, ArrowUp: false, ArrowDown: false, Space: false}
 
-let spriteXPositions = [96,64,32] // Left - Middle - Right
-let currentSpriteXPosition = 0;
-
-let startTime;
-let fps = 10;
-
-let shuffleAnimation = null;
-let shuffleTimeout = null;
-
-let mvRightAnimation = null;
-let mvRightTimeout = null;
-
-let mvLeftAnimation = null;
-let mvLeftTimeout = null;
-
-let jumpAnimation = null;
-let jumpTimeout = null;
-
-function initializePlayer() {
-  setPlayerState("resting");
-  player.style.left = playerPositionOnMAP.left;
-  player.style.bottom = playerPositionOnMAP.bottom;
+const playerState = {
+  x:0,
+  y:0,
+  direction:'resting', // resting - goleft - goright
+  jumping:false,
+  moving:false,
+  blocked:false
 }
 
-function setPlayerState(state) {
-
-  player.classList.remove("resting")
-
-  if ( state !== "jump" ){
-    player.classList.remove("goright")
-    player.classList.remove("goleft")
-  }
-
-  player.classList.add(state)
-
-  if ( player.classList.contains('resting') ) { player.style.backgroundPositionX = spriteXPositions[1] + "px" }
-}
-
-function getPlayerState() {
-  return player.className;
-}
-
-
-
-
-
-
-function startShuffle() {
-  if (shuffleAnimation !== null ) { return }
-
-  requestAnimationFrame(function(timestamp){
-    startTime = timestamp;
-    shufflePlayer(timestamp);
-  })
-}
-function shufflePlayer (timestamp) {
-  shuffleTimeout = setTimeout(function(){
-
-    player.style.backgroundPositionX = spriteXPositions[currentSpriteXPosition] + "px";
-
-    if (getPlayerState() === "goright") {
-      currentSpriteXPosition = currentSpriteXPosition === 2 ? 0 : currentSpriteXPosition + 1;
-    } else if (getPlayerState() === "goleft") {
-      currentSpriteXPosition = currentSpriteXPosition === 0 ? 2 : currentSpriteXPosition - 1;
-    }
-
-    shuffleAnimation = requestAnimationFrame(shufflePlayer);
-  }, 1000/fps)
-}
-function stopShuffle() {
-  clearTimeout(shuffleTimeout);
-  cancelAnimationFrame(shuffleAnimation);
-  shuffleTimeout = null;
-  shuffleAnimation = null;
-}
-
-
-
-
-
-
-function playerMoveRight() {
-  console.log("MOVE RIGHT")
-  if (mvRightAnimation !== null) { return }
-
-  setPlayerState("goright");
-
-  requestAnimationFrame(makeMoveRight);
-  startShuffle();
-}
-function makeMoveRight (timestamp) {
-  mvRightTimeout = setTimeout(function(){
-    playerPositionOnMAP.left += 1;
-    player.style.left = playerPositionOnMAP.left + "px";
-    mvRightAnimation = requestAnimationFrame(makeMoveRight);
-  }, 1000 / (fps * 10))
-}
-
-
-
-
-
-function playerMoveLeft() {
-  console.log("MOVE LEFT")
-  if (mvLeftAnimation !== null) { return }
-
-  setPlayerState("goleft");
-
-  requestAnimationFrame(makeMoveLeft);
-  startShuffle();
-}
-function makeMoveLeft (timestamp) {
-  mvLeftTimeout = setTimeout(function(){
-    playerPositionOnMAP.left -= 1;
-    player.style.left = playerPositionOnMAP.left + "px";
-    mvLeftAnimation = requestAnimationFrame(makeMoveLeft);
-  }, 1000 / (fps * 10))
-}
-
-
-
-function playerJump() {
-
-  // setPlayerState('jump');
-  //
-  // setTimeout(function(){
-  //   player.classList.remove("jump")
-  // },800)
-
-
-  function jump(timestamp) {
-
-    // jumpTimeout = setTimeout(function(){
-
-      if (playerPositionOnMAP.reachedTop === false && playerPositionOnMAP.bottom <= 100) {
-        playerPositionOnMAP.bottom += 5;
-        if ( playerPositionOnMAP.bottom >= 100 ) { playerPositionOnMAP.reachedTop = true; }
-      } else if (playerPositionOnMAP.bottom >= 5) {
-        playerPositionOnMAP.bottom -= 5;
-      }
-
-      if (playerPositionOnMAP.bottom === 0) {
-            playerPositionOnMAP.reachedTop = false;
-            // clearTimeout(jumpTimeout);
-            cancelAnimationFrame(jumpAnimation);
-            jumpTimeout = null;
-            jumpAnimation = null;
-            return;
-      }
-
-      player.style.bottom = playerPositionOnMAP.bottom + "px";
-      jumpAnimation = requestAnimationFrame(jump);
-
-    // }, 10)
-
-  }
-  requestAnimationFrame(jump);
-
-}
-
-
-
-
-function pausePlayer() {
-  console.log("PAUSE PLAYER")
-
-  stopShuffle()
-
-  if (mvRightAnimation) {
-
-    clearTimeout(mvRightTimeout);
-    cancelAnimationFrame(mvRightAnimation);
-    mvRightTimeout = null;
-    mvRightAnimation = null;
-
-  } else if (mvLeftAnimation) {
-
-    clearTimeout(mvLeftTimeout);
-    cancelAnimationFrame(mvLeftAnimation);
-    mvLeftTimeout = null;
-    mvLeftAnimation = null;
-
-  }
-
-}
-
-
-
+const jumpHeight = 100;
+const jumpSpeedUp = 10;
+const jumpSpeedDown = 5;
+const jumpRefreshSpeed = 10;
 
 window.onkeydown = function(e) {
-  switch (e.keyCode) {
-    case 32:
-      playerJump()
-      break;
-    case 37:
-      playerMoveLeft()
-      break;
-    case 39:
-      playerMoveRight()
-      break;
+  keyState[e.code] = true;
+};
+window.onkeyup = function(e) {
+  keyState[e.code] = false;
+};
+
+
+
+
+function initializePlayer() {
+  requestAnimationFrame(gameLoop)
+}
+
+function gameLoop(timestamp) {
+  playerState.moving = false;
+
+  if(keyState["ArrowRight"]) makeMove('goright')
+  if(keyState["ArrowLeft"]) makeMove('goleft')
+  if(keyState["Space"] && !playerState.jumping) {
+    jump()
+  }
+
+  updatePlayerState();
+
+  isColliding();
+
+  requestAnimationFrame(gameLoop)
+}
+
+function makeMove(move) {
+  playerState.moving = true;
+  playerState.direction = move;
+
+  if ( move === 'goright' ) {
+    goRight()
+  } else if ( move === 'goleft') {
+    goLeft()
+  }
+
+}
+
+function goLeft() {
+  playerState.x -= 1;
+}
+
+function goRight() {
+  playerState.x += 1;
+}
+
+function jump () {
+  playerState.jumping = true;
+
+  if (playerState.y < jumpHeight) {
+    playerState.y += jumpSpeedUp;
+    setTimeout(jump, jumpRefreshSpeed);
+  } else {
+    fall()
   }
 }
 
-window.onkeyup = function(e) {
-  switch (e.keyCode) {
-    case 32:
-      // nothing
-      break;
-    case 37:
-      pausePlayer()
-      break;
-    case 39:
-      pausePlayer()
-      break;
+function fall() {
+  playerState.y -= jumpSpeedDown;
+  if (playerState.y > 0) {
+    setTimeout(fall, jumpRefreshSpeed)
+  } else {
+    playerState.jumping = false
   }
+}
+
+function updatePlayerState() {
+
+  // Clear all classes each loop
+  player.className = ""
+
+  // class ".moving" or not
+  if (playerState.moving) { player.classList.add('moving') }
+
+  // add class based on direction
+  player.classList.add(playerState.direction)
+
+  player.style.left = playerState.x + 'px';
+  player.style.bottom = playerState.y + 'px';
+}
+
+function isColliding() {
+  let rect1 = player.getBoundingClientRect();
+  let rect2 = document.getElementById('obstacle').getBoundingClientRect();
+
+  if (rect1.x < rect2.x + rect2.width &&
+     rect1.x + rect1.width > rect2.x &&
+     rect1.y < rect2.y + rect2.height &&
+     rect1.height + rect1.y > rect2.y) {
+
+      // collision détectée !
+      console.log("COLLIDING !!!");
+
+      playerState.blocked = true;
+      return true;
+  } else {
+    playerState.blocked = false;
+    return false;
+  }
+
 }
 
 window.onload = initializePlayer;
-
-// document.getElementById('start').onclick = function () {
-//   startShuffle();
-// }
-//
-// document.getElementById('stop').onclick = function () {
-//   stopShuffle();
-// }

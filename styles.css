@@ -4,32 +4,47 @@
   height:100vh;
 }
 
+#obstacle {
+  position: absolute;
+  bottom:0;
+  left:300px;
+  background:red;
+  width:50px;
+  height:50px; 
+}
+
 #player {
   position:absolute;
   width:32px;
   height:32px;
-  background:url(soldier-sprite.png);
+  background-image:url(soldier-sprite.png);
   border:1px solid red;
+  bottom:0;
 }
 
-#player.resting {
-  background-position-x:64px;
-  background-position-y:128px;
-}
-
-#player.goleft {
-  background-position-x:64px;
-  background-position-y:96px;
-}
-
-#player.goright {
-  background-position-x:64px;
-  background-position-y:64px;
+@keyframes shuffleSprite {
+  100% { background-position-x: -96px; }
 }
 
 @keyframes jump {
-  0%   {transform: translateY(0px)}
-  100% {transform: translateY(-100px)}
+  100% { transform: translateY(-100px) }
+}
+
+.moving {
+  animation: shuffleSprite 0.3s steps(3) infinite;
+}
+
+.goright {
+  background-position-y:64px;
+}
+
+.goleft {
+  background-position-y:96px;
+}
+
+.resting {
+  background-position-x:64px;
+  background-position-y:128px;
 }
 
 .jump {
