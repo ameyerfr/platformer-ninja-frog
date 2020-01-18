@@ -1,4 +1,6 @@
+let map = document.getElementById('map-container');
 let player = document.getElementById('player');
+let obstacles = map.querySelectorAll('.obstacle')
 
 const keyState = {};
 //  {ArrowRight: false, ArrowLeft: false, ArrowUp: false, ArrowDown: false, Space: false}
@@ -12,10 +14,11 @@ const playerState = {
   blocked:false
 }
 
-const jumpHeight = 100;
-const jumpSpeedUp = 10;
+const jumpHeight = 150;
+const jumpSpeedUp = 5;
 const jumpSpeedDown = 5;
 const jumpRefreshSpeed = 10;
+const gravityRate = 5;
 
 window.onkeydown = function(e) {
   keyState[e.code] = true;
@@ -37,19 +40,36 @@ function gameLoop(timestamp) {
   if(keyState["ArrowRight"]) makeMove('goright')
   if(keyState["ArrowLeft"]) makeMove('goleft')
   if(keyState["Space"] && !playerState.jumping) {
-    jump()
+    jump(playerState.y + jumpHeight)
   }
+
+  applyGravity();
 
   updatePlayerState();
 
-  isColliding();
+  isAnyObstacleColliding();
 
   requestAnimationFrame(gameLoop)
 }
 
+function applyGravity() {
+
+  let distFromFloor = howFarFromFloor();
+
+  if (isAnyObstacleColliding(true)) {
+      console.log("GOING TO COLLIDE NEXT PIXEL");
+      return;
+  }
+
+
+  if ( distFromFloor > gravityRate && !playerState.jumping  && !playerState.blocked) {
+    console.log("Dist from floor : " + distFromFloor + " remove 1 from y ! ");
+    playerState.y -= gravityRate;
+  }
+}
+
 function makeMove(move) {
   playerState.moving = true;
-  playerState.direction = move;
 
   if ( move === 'goright' ) {
     goRight()
@@ -57,29 +77,43 @@ function makeMove(move) {
     goLeft()
   }
 
+  playerState.direction = move;
+
 }
 
 function goLeft() {
+  if (playerState.blocked && playerState.direction === 'goleft' ) { return; }
   playerState.x -= 1;
 }
 
 function goRight() {
+  if (playerState.blocked && playerState.direction === 'goright') { return; }
   playerState.x += 1;
 }
 
-function jump () {
+function jump (target) {
   playerState.jumping = true;
 
-  if (playerState.y < jumpHeight) {
+  if (playerState.y < target) {
     playerState.y += jumpSpeedUp;
     setTimeout(jump, jumpRefreshSpeed);
   } else {
-    fall()
+    // playerState.y = playerState.y + 1;
+    playerState.jumping = false
+    // fall()
   }
 }
 
 function fall() {
+
+  if (playerState.blocked && playerState.jumping) {
+    playerState.y = playerState.y + 1;
+    playerState.jumping = false
+    return;
+  }
+
   playerState.y -= jumpSpeedDown;
+
   if (playerState.y > 0) {
     setTimeout(fall, jumpRefreshSpeed)
   } else {
@@ -88,7 +122,6 @@ function fall() {
 }
 
 function updatePlayerState() {
-
   // Clear all classes each loop
   player.className = ""
 
@@ -102,23 +135,53 @@ function updatePlayerState() {
   player.style.bottom = playerState.y + 'px';
 }
 
-function isColliding() {
-  let rect1 = player.getBoundingClientRect();
-  let rect2 = document.getElementById('obstacle').getBoundingClientRect();
+function howFarFromFloor() {
+  let mapRects = map.getBoundingClientRect()
+  let playerRect = player.getBoundingClientRect()
+  return mapRects.bottom - playerRect.bottom;
+  // isColliding(player.getBoundingClientRect(), map.getBoundingClientRect(), false, 'MAP')
+}
+
+function isObstacleGoingtoColide() {
+  let playerRects = player.getBoundingClientRect();
+  let obstacleRects = document.getElementById('obstacle').getBoundingClientRect();
+  playerRects.y = playerRects.y + 1;
+
+  return isColliding(playerRects, obstacleRects, 'Obstacle')
+
+}
+
+function isAnyObstacleColliding(isGoingToCollide) {
+  let playerRects = player.getBoundingClientRect();
+  if ( isGoingToCollide ) { playerRects.y = playerRects.y + 1 }
+
+  for (let i = 0; i < obstacles.length; i++) {
+    let obstacle = obstacles[i];
+    let thereIsCollision = isColliding(playerRects,
+                                       obstacle.getBoundingClientRect(),
+                                       'Obstacle id : ' + obstacle.id)
+    if ( thereIsCollision ) return;
+  }
+
+}
+
+function isColliding(rect1, rect2, collisionName) {
+  // let rect1 = el1.getBoundingClientRect();
+  // let rect2 = el2.getBoundingClientRect();
 
   if (rect1.x < rect2.x + rect2.width &&
      rect1.x + rect1.width > rect2.x &&
      rect1.y < rect2.y + rect2.height &&
      rect1.height + rect1.y > rect2.y) {
 
-      // collision détectée !
-      console.log("COLLIDING !!!");
+      console.log("COLLIDING - " + collisionName);
 
       playerState.blocked = true;
       return true;
+
   } else {
-    playerState.blocked = false;
-    return false;
+    playerState.blocked =  false
+    return  false;
   }
 
 }
