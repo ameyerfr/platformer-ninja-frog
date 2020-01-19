@@ -7,7 +7,6 @@
   position: relative;
   width:100vw;
   height:100vh;
-  border: 1px solid green;
   overflow: hidden;
 }
 
@@ -21,18 +20,9 @@
 #obstacle1 {  bottom:50px; left:100px; }
 #obstacle2 {  bottom:100px; left:300px; }
 
-#player {
-  position:absolute;
-  width:32px;
-  height:32px;
-  /* border:1px solid red; */
-  bottom:0;
-  z-index:2;
-}
-
-#player-hurtbox {
-  position: absolute;
+.hurtbox {
   /* border:1px solid blue; */
+  position: absolute;
   width:14px;
   top:5px;
   left:8px;

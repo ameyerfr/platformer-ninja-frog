@@ -2,11 +2,10 @@ class Game {
 
   constructor() {
     this.world = {
+      DOMcontainer : document.getElementById('map-container'),
       gravity : 0.5,
       friction : 0.85,
-      player :  new Character({name:'hero'}),
-      height : function() { return document.getElementById('map-container').getBoundingClientRect().height },
-      width : function() { return document.getElementById('map-container').getBoundingClientRect().width }
+      player : null
     }
     this.controls = {
       left  : { active : false, pressed : false },
@@ -33,9 +32,17 @@ class Game {
     controlObj.pressed = pressed;
   }
 
+  getWorldHeight() {
+    return this.world.DOMcontainer.getBoundingClientRect().height;
+  }
+
+  getWorldWidth() {
+    return this.world.DOMcontainer.getBoundingClientRect().width;
+  }
+
   collideObjectWithWorld(object) {
-    let worldHeight = this.world.height();
-    let worldWidth = this.world.width();
+    let worldHeight = this.getWorldHeight();
+    let worldWidth = this.getWorldWidth();
 
     // Out of boundaries on the left
     if (object.x < 0) { object.x = 0; object.speed_x = 0; }
@@ -68,12 +75,10 @@ class Game {
 
   gameLoop() {
 
-    if ( this.controls.left.active )  {
-      this.world.player.moveLeft()
-    }
-    if ( this.controls.right.active ) {
-      this.world.player.moveRight()
-    }
+    this.world.player.currentActions = [];
+
+    if ( this.controls.left.active )  { this.world.player.moveLeft() }
+    if ( this.controls.right.active ) { this.world.player.moveRight() }
     if ( this.controls.jump.active )  {
       this.world.player.jump();
       this.controls.jump.active = false;
@@ -86,6 +91,11 @@ class Game {
       this.gameLoop(timestamp);
     }), 1000/30)
 
+  }
+
+  addCharacter(character) {
+    this.world.player = character;
+    this.world.DOMcontainer.appendChild(character.DOMcontainer);
   }
 
   listenToControls() {
