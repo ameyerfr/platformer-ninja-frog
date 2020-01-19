@@ -1,5 +1,6 @@
 let map = document.getElementById('map-container');
 let player = document.getElementById('player');
+let hurtBox = document.getElementById('player-hurtbox');
 let obstacles = map.querySelectorAll('.obstacle')
 
 const keyState = {};
@@ -128,7 +129,7 @@ function updatePlayerState() {
   // class ".moving" or not
   if (playerState.moving) { player.classList.add('moving') }
   else { player.classList.add('idling') }
-  
+
   // add class based on direction
   player.classList.add(playerState.direction)
 
@@ -153,7 +154,7 @@ function isObstacleGoingtoColide() {
 }
 
 function isAnyObstacleColliding(isGoingToCollide) {
-  let playerRects = player.getBoundingClientRect();
+  let playerRects = hurtBox.getBoundingClientRect();
   if ( isGoingToCollide ) { playerRects.y = playerRects.y + 1 }
 
   for (let i = 0; i < obstacles.length; i++) {
@@ -186,5 +187,6 @@ function isColliding(rect1, rect2, collisionName) {
   }
 
 }
+
 
 window.onload = initializePlayer;

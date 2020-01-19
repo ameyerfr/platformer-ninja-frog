@@ -30,11 +30,20 @@
   z-index:2;
 }
 
+#player-hurtbox {
+  position: absolute;
+  border:1px solid blue;
+  width:24px;
+  top:5px;
+  left:3px;
+  bottom:0;
+}
+
 @keyframes idling {
   100% { background-position-x: -352px; }
 }
 
-@keyframes running {
+@keyframes moving {
   100% { background-position-x: -384px; }
 }
 
@@ -49,11 +58,16 @@
 
 .moving {
   background-image:url(Pixel-Adventure-Pack/Characters/Ninja_Frog/Run.png);
-  animation: running 1s steps(12) infinite;
+  animation: moving 1s steps(12) infinite;
 }
 
-.goright { }
-.goleft { transform: rotateY(180deg) }
+.goright {
+
+}
+
+.goleft {
+  transform: rotateY(180deg);
+}
 
 .jump {
   transform-origin: 0 0;
