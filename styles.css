@@ -18,24 +18,24 @@
   height:10px;
 }
 
-#obstacle1 {  bottom:0px; left:100px; }
-#obstacle2 {  bottom:0px; left:500px; }
+#obstacle1 {  bottom:50px; left:100px; }
+#obstacle2 {  bottom:100px; left:300px; }
 
 #player {
   position:absolute;
   width:32px;
   height:32px;
-  border:1px solid red;
+  /* border:1px solid red; */
   bottom:0;
   z-index:2;
 }
 
 #player-hurtbox {
   position: absolute;
-  border:1px solid blue;
-  width:24px;
+  /* border:1px solid blue; */
+  width:14px;
   top:5px;
-  left:3px;
+  left:8px;
   bottom:0;
 }
 
@@ -45,10 +45,6 @@
 
 @keyframes moving {
   100% { background-position-x: -384px; }
-}
-
-@keyframes jumping {
-  100% { transform: translateY(-100px) }
 }
 
 .idling {
@@ -61,15 +57,26 @@
   animation: moving 1s steps(12) infinite;
 }
 
-.goright {
-
+.jumping {
+  background-image:url(Pixel-Adventure-Pack/Characters/Ninja_Frog/Jump.png);
 }
 
-.goleft {
+.right {
+  transform: rotateY(0deg);
+}
+
+.left {
   transform: rotateY(180deg);
 }
 
-.jump {
-  transform-origin: 0 0;
-  animation: jumping .4s ease-out alternate 2;
+
+/*
+@keyframes cssjump {
+  100% { transform: translateY(-100px) }
 }
+
+.cssjump {
+  transform-origin: 0 0;
+  animation: cssjump .4s ease-out alternate 2;
+}
+*/

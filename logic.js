@@ -9,7 +9,7 @@ const keyState = {};
 const playerState = {
   x:0,
   y:0,
-  direction:'idling', // resting - goleft - goright
+  direction:'right', // left or right
   jumping:false,
   moving:false,
   blocked:false
@@ -32,6 +32,9 @@ window.onkeyup = function(e) {
 
 
 function initializePlayer() {
+
+  console.log(hero);
+
   requestAnimationFrame(gameLoop)
 }
 
@@ -50,7 +53,7 @@ function gameLoop(timestamp) {
 
   isAnyObstacleColliding();
 
-  requestAnimationFrame(gameLoop)
+  setTimeout(requestAnimationFrame(gameLoop), 1000/30) // 30 fps
 }
 
 function applyGravity() {
@@ -78,17 +81,17 @@ function makeMove(move) {
     goLeft()
   }
 
-  playerState.direction = move;
-
 }
 
 function goLeft() {
-  if (playerState.blocked && playerState.direction === 'goleft' ) { return; }
+  if (playerState.blocked && playerState.direction === 'left' ) { return; }
+  playerState.direction = 'left';
   playerState.x -= 1;
 }
 
 function goRight() {
-  if (playerState.blocked && playerState.direction === 'goright') { return; }
+  if (playerState.blocked && playerState.direction === 'right') { return; }
+  playerState.direction = 'right';
   playerState.x += 1;
 }
 
@@ -127,7 +130,8 @@ function updatePlayerState() {
   player.className = ""
 
   // class ".moving" or not
-  if (playerState.moving) { player.classList.add('moving') }
+  if ( playerState.jumping ) { player.classList.add('jumping') }
+  else if (playerState.moving) { player.classList.add('moving') }
   else { player.classList.add('idling') }
 
   // add class based on direction
@@ -154,12 +158,13 @@ function isObstacleGoingtoColide() {
 }
 
 function isAnyObstacleColliding(isGoingToCollide) {
-  let playerRects = hurtBox.getBoundingClientRect();
-  if ( isGoingToCollide ) { playerRects.y = playerRects.y + 1 }
+  let boxRects = hurtBox.getBoundingClientRect();
+  // if ( isGoingToCollide ) { playerRects.y = playerRects.y + 1 }
+  if ( isGoingToCollide ) { boxRects.y = boxRects.y + 2 }
 
   for (let i = 0; i < obstacles.length; i++) {
     let obstacle = obstacles[i];
-    let thereIsCollision = isColliding(playerRects,
+    let thereIsCollision = isColliding(boxRects,
                                        obstacle.getBoundingClientRect(),
                                        'Obstacle id : ' + obstacle.id)
     if ( thereIsCollision ) return;
