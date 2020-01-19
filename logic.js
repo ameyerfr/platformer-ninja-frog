@@ -8,7 +8,7 @@ const keyState = {};
 const playerState = {
   x:0,
   y:0,
-  direction:'resting', // resting - goleft - goright
+  direction:'idling', // resting - goleft - goright
   jumping:false,
   moving:false,
   blocked:false
@@ -127,7 +127,8 @@ function updatePlayerState() {
 
   // class ".moving" or not
   if (playerState.moving) { player.classList.add('moving') }
-
+  else { player.classList.add('idling') }
+  
   // add class based on direction
   player.classList.add(playerState.direction)
 

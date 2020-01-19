@@ -18,45 +18,44 @@
   height:10px;
 }
 
-#obstacle1 {  bottom:100px; left:100px; }
-#obstacle2 {  bottom:150px; left:500px; }
+#obstacle1 {  bottom:0px; left:100px; }
+#obstacle2 {  bottom:0px; left:500px; }
 
 #player {
   position:absolute;
   width:32px;
   height:32px;
-  background-image:url(soldier-sprite.png);
   border:1px solid red;
   bottom:0;
   z-index:2;
 }
 
-@keyframes shuffleSprite {
-  100% { background-position-x: -96px; }
+@keyframes idling {
+  100% { background-position-x: -352px; }
 }
 
-@keyframes jump {
+@keyframes running {
+  100% { background-position-x: -384px; }
+}
+
+@keyframes jumping {
   100% { transform: translateY(-100px) }
 }
 
+.idling {
+  background-image:url(Pixel-Adventure-Pack/Characters/Ninja_Frog/Idle.png);
+  animation: idling 1s steps(11) infinite;
+}
+
 .moving {
-  animation: shuffleSprite 0.3s steps(3) infinite;
+  background-image:url(Pixel-Adventure-Pack/Characters/Ninja_Frog/Run.png);
+  animation: running 1s steps(12) infinite;
 }
 
-.goright {
-  background-position-y:64px;
-}
-
-.goleft {
-  background-position-y:96px;
-}
-
-.resting {
-  background-position-x:64px;
-  background-position-y:128px;
-}
+.goright { }
+.goleft { transform: rotateY(180deg) }
 
 .jump {
   transform-origin: 0 0;
-  animation: jump .4s ease-out alternate 2;
+  animation: jumping .4s ease-out alternate 2;
 }
