@@ -58,12 +58,9 @@ class Game {
     else if (object.y + object.height > worldHeight) { object.jumping = false; object.y = worldHeight - object.height; object.speed_y = 0; }
   }
 
-  collideObjectWithObstacles(source_obj) {
+  collideObjectWithObstacles(source_obj, source_obstacle) {
 
-    // TODO - Loop on all obstacles
-    let obstacle1 = document.getElementById('obstacle1');
-    let obstacle = obstacle1.getBoundingClientRect();
-
+    let obstacle = source_obstacle.getBoundingClientRect();
     let object = source_obj.getHurtBoxCoordinates();
 
     let rect1 = object;
@@ -137,7 +134,14 @@ class Game {
     this.world.player.speed_y *= this.world.friction;
 
     this.collideObjectWithWorld(this.world.player);
-    this.collideObjectWithObstacles(this.world.player);
+
+
+    // Loop on all obstacles
+    let obstacles = document.querySelectorAll('.obstacle');
+    obstacles.forEach(obstacle => {
+      this.collideObjectWithObstacles(this.world.player, obstacle);
+    })
+
   }
 
   renderWorld() {

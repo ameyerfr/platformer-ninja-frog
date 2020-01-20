@@ -9,6 +9,12 @@
   width:100vw;
   height:100vh;
   overflow: hidden;
+  background-image:url(Pixel-Adventure-Pack/background/Gray.png);
+  background-repeat: repeat;
+}
+
+.obstacle {
+  position: absolute;
 }
 
 .hardblock {
@@ -21,14 +27,10 @@
   width:32px;
 }
 
-.obstacle {
-  position: absolute;
-  background:black;
-  width:16px;
-  height:16px;
-}
-
 #obstacle1 {  bottom:100px; left:100px; }
+#obstacle2 {  bottom:200px; left:150px; }
+#obstacle3 {  bottom:250px; left:250px; }
+#obstacle4 {  bottom:350px; left:50px; }
 
 .character {
   /* background-color:lightblue; */
