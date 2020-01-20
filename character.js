@@ -5,10 +5,12 @@ class Character {
      this.currentActions = [];
      this.direction = 'right';
      this.jumping = false;
+     this.x_old = 0;
+     this.y_old = 0;
      this.x = 0;
-     this.y = 50;
-     this.height = 32;
-     this.width = 32;
+     this.y = 0;
+     this.height = 64;
+     this.width = 64;
      this.speed_x = 0;
      this.speed_y = 0;
 
@@ -19,7 +21,7 @@ class Character {
    jump() {
      if(!this.jumping) {
        this.jumping = true;
-       this.speed_y -= 20;
+       this.speed_y -= 50;
      }
    }
 
@@ -39,24 +41,30 @@ class Character {
 
    // Called each game loop #2
    update() {
-     this.x = Math.round(this.x + this.speed_x)
-     this.y = Math.round(this.y - this.speed_y)
+     // this.x = Math.round(this.x + this.speed_x)
+     // this.y = Math.round(this.y - this.speed_y)
+
+     this.x_old = this.x;
+     this.y_old = this.y;
+
+     this.x += this.speed_x;
+     this.y += this.speed_y;
 
      // If still jumping
      if ( this.jumping ) { this.currentActions.push('jumping') }
 
      // If down on the ground
-     if ( this.y <= 0 ) { this.jumping = false; }
+     // if ( this.y <= 0 ) { this.jumping = false; }
    }
 
    // Called each game loop #3
    render() {
-
+     
      // Reset all css classes
      this.DOMcontainer.className = '';
 
      // default behavior
-     if ( this.currentActions.length === 0 ) { this.currentActions = ['idling'] }
+     if ( this.currentActions.length === 1 ) { this.currentActions.push('idling') }
 
      // Always put the direction so character faces the right way
      this.currentActions.push(this.direction);
@@ -67,8 +75,8 @@ class Character {
      })
 
      // Update character position in the DOM
-     this.DOMcontainer.style.left = Math.floor(this.x) + 'px';
-     this.DOMcontainer.style.bottom = Math.floor(this.y) + 'px';
+     this.DOMcontainer.style.left = this.x + 'px';
+     this.DOMcontainer.style.top = this.y + 'px';
    }
 
    initialRender() {
@@ -78,9 +86,40 @@ class Character {
      charContainer.style.position = 'absolute';
      charContainer.style.height = this.height + 'px';
      charContainer.style.width = this.width + 'px';
-     charContainer.className = 'idling right';
+     charContainer.className = 'character idling right';
      charContainer.innerHTML = '<div class="hurtbox"></div>';
      return charContainer;
+   }
+
+   /**
+    * get Hurtbox newCoordinates
+    * wich are the character newCoordinates
+    * with the hurtbox offsets
+    */
+   getHurtBoxCoordinates() {
+     return {
+       x:this.x + 16,
+       y:this.y + 12,
+       x_old:this.x_old + 16,
+       y_old:this.y_old + 12,
+       width:30,
+       height:50
+     }
+   }
+
+   /**
+    * set the character coordinates, speed and jumping keyState
+    * based on new Hurtbox
+    * (accounting for the hurtbox offset)
+    */
+   setHurtboxCoordinates(newCoordinates) {
+     let assignObj = {}
+     if (newCoordinates.hasOwnProperty('x'))       { assignObj.x = newCoordinates.x - 16  }
+     if (newCoordinates.hasOwnProperty('y'))       { assignObj.y = newCoordinates.y - 12  }
+     if (newCoordinates.hasOwnProperty('speed_x')) { assignObj.speed_x = newCoordinates.speed_x }
+     if (newCoordinates.hasOwnProperty('speed_y')) { assignObj.speed_y = newCoordinates.speed_y }
+     if (newCoordinates.hasOwnProperty('jumping')) { assignObj.jumping = newCoordinates.jumping }
+     Object.assign(this, assignObj);
    }
 
 }

@@ -4,8 +4,8 @@ window.onload = function() {
   // let hurtBox = document.getElementById('player-hurtbox');
   // let obstacles = map.querySelectorAll('.obstacle');
 
-  let game = new Game();
+  window.game = new Game();
   let character = new Character({name:'froggy'})
-  game.addCharacter(character);
-  game.init();
+  window.game.addCharacter(character);
+  window.game.init();
 }

@@ -1,6 +1,7 @@
 * {
   margin:0;
   padding:0;
+  image-rendering:pixelated;
 }
 
 #map-container {
@@ -10,31 +11,45 @@
   overflow: hidden;
 }
 
+.hardblock {
+  position: absolute;
+  background-image:url(Pixel-Adventure-Pack/Terrain/Terrain.png);
+  background-position-y:calc(-16px*2);
+  background-position-x:calc(160px*2);
+  background-size: calc(352px*2);
+  height:32px;
+  width:32px;
+}
+
 .obstacle {
   position: absolute;
   background:black;
-  width:50px;
-  height:10px;
+  width:16px;
+  height:16px;
 }
 
-#obstacle1 {  bottom:50px; left:100px; }
-#obstacle2 {  bottom:100px; left:300px; }
+#obstacle1 {  bottom:100px; left:100px; }
+
+.character {
+  /* background-color:lightblue; */
+  background-size: cover;
+  /* border:1px solid red; */
+}
 
 .hurtbox {
-  /* border:1px solid blue; */
   position: absolute;
-  width:14px;
-  top:5px;
-  left:8px;
-  bottom:0;
+  height:50px;
+  width:30px;
+  top:12px;
+  left:16px;
 }
 
 @keyframes idling {
-  100% { background-position-x: -352px; }
+  100% { background-position-x: calc(-352px*2); }
 }
 
 @keyframes moving {
-  100% { background-position-x: -384px; }
+  100% { background-position-x: calc(-384px*2); }
 }
 
 .idling {
