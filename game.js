@@ -3,10 +3,11 @@ class Game {
   constructor() {
     this.world = {
       DOMcontainer : document.getElementById('map-container'),
-      gravity : 2,
-      friction : 0.9,
+      gravity : 1.5,
+      friction : 0.85,
       player : null,
-      enemies : []
+      enemies : [],
+      obstacles : []
     }
     this.controls = {
       left  : { active : false, pressed : false },
@@ -59,13 +60,16 @@ class Game {
     else if (object.y + object.height > worldHeight) { object.jumping = false; object.y = worldHeight - object.height; object.speed_y = 0; }
   }
 
-  collideObjectWithObstacles(source_obj, source_obstacle) {
+  //
+  // Collide a Character type object with all the obstacles in the world
+  //
+  collideCharWithObstacle(source_obj, obstacle) {
 
-    let obstacle = source_obstacle.getBoundingClientRect();
+    let obstacleRects = obstacle.clientRects;
     let object = source_obj.getHurtBoxCoordinates();
 
     let rect1 = object;
-    let rect2 = obstacle;
+    let rect2 = obstacleRects;
 
     // THERE IS AABB Collision
     if (rect1.x < rect2.x + rect2.width &&
@@ -75,19 +79,19 @@ class Game {
 
          let old_object_bottom = object.y_old + object.height;
          let object_bottom = object.y + object.height;
-         let obstacle_bottom = obstacle.y + obstacle.height;
+         let obstacle_bottom = obstacleRects.y + obstacleRects.height;
 
          let old_object_right = object.x_old + object.width;
          let object_right = object.x + object.width;
-         let obstacle_right = obstacle.x + obstacle.width
+         let obstacle_right = obstacleRects.x + obstacleRects.width
 
          let old_object_left = object.x_old;
          let object_left = object.x;
-         let obstacle_left = obstacle.x;
+         let obstacle_left = obstacleRects.x;
 
          let old_object_top = object.y_old;
          let object_top = object.y;
-         let obstacle_top = obstacle.y;
+         let obstacle_top = obstacleRects.y;
 
 
          if (object_bottom > obstacle_top && old_object_bottom <= obstacle_top) {
@@ -161,7 +165,7 @@ class Game {
     let charactersToUpdate = [this.world.player, ...this.world.enemies];
 
     // Update each character with gravity and friction
-    // Handle collision with world
+    // Handle collision with world boundaries
     charactersToUpdate.forEach(character => {
       character.speed_y += this.world.gravity;
       character.update();
@@ -172,13 +176,13 @@ class Game {
       this.collideObjectWithWorld(character);
     })
 
+    // Collide player with all the enemies of the world
     this.collidePlayerWithEnemies(this.world.player);
 
-    // Loop on all obstacles
-    let obstacles = document.querySelectorAll('.obstacle');
-    obstacles.forEach(obstacle => {
-      this.collideObjectWithObstacles(this.world.player, obstacle);
-    })
+    // Collide player with all the obstacles of the world
+    this.world.obstacles.forEach(obstacle => {
+      this.collideCharWithObstacle(this.world.player, obstacle)
+    });
 
   }
 
@@ -232,8 +236,25 @@ class Game {
     window.onkeyup   = this.controlsHandler.bind(this);
   }
 
+  /**
+   * GENERATE A GAME - CALL #1
+   */
+  generateObstacles(obstacles) {
+
+    obstacles.forEach(obstacle_config => {
+      obstacle_config.parentEl = this.world.DOMcontainer;
+      this.world.obstacles.push(new Obstacle(obstacle_config))
+    })
+
+  }
+
+  /**
+   * GENERATE A GAME - CALL #2
+   */
   init() {
+
     this.listenToControls();
+
     requestAnimationFrame((timestamp) => {
       this.gameLoop(timestamp);
     })

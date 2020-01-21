@@ -14,7 +14,7 @@ class Character {
      this.width = 64;
      this.speed_x = 0;
      this.speed_y = 0;
-     this.jumpHeight = config.jumpHeight || 50;
+     this.jumpHeight = config.jumpHeight || 50; // 30 max to be less than tile size (32px)
      this.hurtboxOffsets = config.hurtbox;
 
      this.baseStates.push('character');
@@ -119,7 +119,7 @@ class Character {
    }
 
    /**
-    * set the character coordinates, speed and jumping keyState
+    * set the character coordinates, speed and jumping state
     * based on new Hurtbox
     * (accounting for the hurtbox offset)
     */

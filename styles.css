@@ -20,8 +20,7 @@
   position: absolute;
 }
 
-.hardblock {
-  position: absolute;
+.hardblock-32 {
   background-image:url(Pixel-Adventure-Pack/Terrain/Terrain.png);
   background-position-y:calc(-16px*2);
   background-position-x:calc(160px*2);
@@ -30,11 +29,30 @@
   width:32px;
 }
 
-#obstacle0 {  bottom:0px; left:300px; }
-#obstacle1 {  bottom:100px; left:100px; }
+.hardblock-64 {
+  background-image:url(Pixel-Adventure-Pack/Terrain/Terrain.png);
+  background-position-y:calc(-16px*2);
+  background-position-x:calc(144px*2);
+  background-size: calc(352px*2);
+  height:64px;
+  width:64px;
+}
+
+/* #obstacle0 {  bottom:0px; left:300px; }
+#obstacle1 {  bottom:400px; left:200px; }
 #obstacle2 {  bottom:200px; left:150px; }
-#obstacle3 {  bottom:250px; left:250px; }
-#obstacle4 {  bottom:350px; left:50px; }
+#obstacle3 {  bottom:250px; left:250px; } */
+
+.platform {
+  background-image:url(Pixel-Adventure-Pack/Terrain/Terrain.png);
+  background-position-y:calc(-16px*2);
+  background-position-x:calc(80px*2);
+  background-size: calc(352px*2);
+  height:10px;
+  width:96px;
+}
+
+/* #obstacle4 { bottom:100px; left:100px; } */
 
 /**
  * ======= CHARACTERS =======

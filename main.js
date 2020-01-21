@@ -26,14 +26,20 @@ window.onload = function() {
       height:40
     },
     reverseSpriteDir:true,
-    jumpHeight:20
+    jumpHeight:15
   });
 
   window.game.addPlayer(froggy);
 
-  setTimeout(function(){
-    window.game.addEnemy(mushroom);
-  }, 2000)
+  window.game.generateObstacles([
+    {id:1, type:'hardblock-32', h:32, w:32, left:100, bottom:52},
+    {id:2, type:'hardblock-64', h:64, w:64, left:150, bottom:100},
+    {id:3, type:'platform',    h:10, w:96, left:250, bottom:200}
+  ])
+
+  // setTimeout(function(){
+  //   window.game.addEnemy(mushroom);
+  // }, 2000)
 
   window.game.init();
 }
