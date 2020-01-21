@@ -32,16 +32,20 @@ window.onload = function() {
   window.game.addPlayer(froggy);
 
   window.game.generateObstacles([
-    {id:1, type:'hardblock-32', h:32, w:32, left:100, bottom:52},
-    {id:2, type:'hardblock-64', h:64, w:64, left:150, bottom:100},
-    {id:3, type:'platform',     h:10, w:96, left:250, bottom:90, animate:{keys:[{transform:'translateX(-50px)'},{transform:'translateX(50px)'}], duration:2000} }
+    {id:1, type:'hardblock-32', h:32, w:32, left:120, bottom:80},
+    {id:2, type:'hardblock-64', h:64, w:64, right:150, top:150},
+    {id:3, type:'hardblock-32', h:32, w:32, left:200, bottom:200},
+    {id:4, type:'hardblock-32', h:32, w:32, left:850, bottom:330},
+    {id:5, type:'platform',     h:10, w:96, left:300, bottom:350, animate:{keys:[{transform:'translateX(-50px)'},{transform:'translateX(50px)'}], duration:2000} },
+    {id:6, type:'platform',     h:10, w:96, left:550, bottom:350, animate:{keys:[{transform:'translateX(50px)'},{transform:'translateX(-50px)'}], duration:2000} },
+
   ])
 
 
 
-  // setTimeout(function(){
-  //   window.game.addEnemy(mushroom);
-  // }, 2000)
+  setTimeout(function(){
+    window.game.addEnemy(mushroom);
+  }, 2000)
 
   window.game.init();
 }
