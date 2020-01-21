@@ -65,7 +65,7 @@ class Game {
   //
   collideCharWithObstacle(source_obj, obstacle) {
 
-    let obstacleRects = obstacle.clientRects;
+    let obstacleRects = obstacle.getRects();
     let object = source_obj.getHurtBoxCoordinates();
 
     let rect1 = object;
@@ -94,40 +94,52 @@ class Game {
          let obstacle_top = obstacleRects.y;
 
 
-         if (object_bottom > obstacle_top && old_object_bottom <= obstacle_top) {
-           console.log("COLLISION - BOTTOM player with TOP obstacle");
-           source_obj.setHurtboxCoordinates({
-             y : obstacle_top - object.height, // - 0.01,
-             speed_y : 0,
-             jumping : false
-           })
+         if (obstacle.collision.top &&
+             object_bottom > obstacle_top &&
+             old_object_bottom <= obstacle_top) {
+               console.log("COLLISION - BOTTOM player with TOP obstacle");
+
+               source_obj.setHurtboxCoordinates({
+                 y : obstacle_top - object.height, // - 0.01,
+                 speed_y : 0,
+                 jumping : false
+               })
          }
 
-         if (object_right > obstacle_left && old_object_right <= obstacle_left) {
-           console.log("COLLISION - RIGHT player with LEFT obstacle")
-           source_obj.setHurtboxCoordinates({
-             x : obstacle_left - object.width, // - 0.01,
-             speed_x : 0
-           })
+         if (obstacle.collision.left &&
+             object_right > obstacle_left &&
+             old_object_right <= obstacle_left) {
+               console.log("COLLISION - RIGHT player with LEFT obstacle")
+
+               source_obj.setHurtboxCoordinates({
+                 x : obstacle_left - object.width, // - 0.01,
+                 speed_x : 0
+               })
          }
 
-         if (object_left < obstacle_right && old_object_left >= obstacle_right) {
-           console.log("COLLISION - LEFT player with RIGHT obstacle")
-           source_obj.setHurtboxCoordinates({
-             x : obstacle_right, // + 0.01,
-             speed_x : 0
-           })
+         if (obstacle.collision.right &&
+             object_left < obstacle_right &&
+             old_object_left >= obstacle_right) {
+               console.log("COLLISION - LEFT player with RIGHT obstacle")
+
+               source_obj.setHurtboxCoordinates({
+                 x : obstacle_right, // + 0.01,
+                 speed_x : 0
+               })
          }
 
-         if (object_top < obstacle_bottom && old_object_top >= obstacle_bottom) {
-           console.log("COLLISION - TOP player with BOTTOM obstacle")
-           source_obj.setHurtboxCoordinates({
-             y : obstacle_bottom,
-             speed_y : 0
-           })
-          }
+         if (obstacle.collision.bottom &&
+             object_top < obstacle_bottom &&
+             old_object_top >= obstacle_bottom) {
+               console.log("COLLISION - TOP player with BOTTOM obstacle")
 
-    }
+               source_obj.setHurtboxCoordinates({
+                 y : obstacle_bottom,
+                 speed_y : 0
+               })
+         }
+
+    } // end of AABB collision
 
   }
 

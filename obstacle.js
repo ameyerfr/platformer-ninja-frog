@@ -2,6 +2,14 @@ class Obstacle {
 
   constructor(config) {
     this.parentEl = config.parentEl;
+    this.moving = false;
+
+    if (config.type === "platform") {
+      this.collision = { bottom:false, top:true, left:true, right:true}
+    } else {
+      this.collision = { top:true, right:true, bottom:true, left:true}
+    }
+
     this.initialize(config)
   }
 
@@ -22,6 +30,24 @@ class Obstacle {
     this.parentEl.appendChild(el);
     this.DOMcontainer = el;
     this.clientRects = el.getBoundingClientRect();
+
+    if (config.hasOwnProperty('animate')) {
+      this.moving = true;
+      el.animate(config.animate.keys, {
+        duration: config.animate.duration,
+        direction:'alternate',
+        iterations: Infinity
+      });
+
+    }
+
+  }
+
+  // Returns cached rects in case of a non moving obstacle
+  // Returns immediate getBoundingClientRect in case of moving platform
+  getRects() {
+    if (!this.moving) { return this.clientRects; }
+    else { return this.DOMcontainer.getBoundingClientRect(); }
   }
 
 }
