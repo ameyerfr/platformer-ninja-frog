@@ -3,9 +3,10 @@ class Game {
   constructor() {
     this.world = {
       DOMcontainer : document.getElementById('map-container'),
-      gravity : 1,
+      gravity : 2,
       friction : 0.9,
-      player : null
+      player : null,
+      enemies : []
     }
     this.controls = {
       left  : { active : false, pressed : false },
@@ -126,15 +127,52 @@ class Game {
 
   }
 
+  collidePlayerWithEnemies(player, enemies) {
+
+    let playerRects = player.getHurtBoxCoordinates();
+
+    let old_player_bottom = playerRects.y_old + playerRects.height;
+    let player_bottom = playerRects.y + playerRects.height;
+
+    this.world.enemies.forEach(enemy => {
+
+      let enemyRects = enemy.getHurtBoxCoordinates();
+      let enemy_top = enemyRects.y;
+
+      if ( player.isColliding(enemy) ) {
+        console.log("PLAYER COLLIDING ENEMY")
+
+        if ( player_bottom > enemy_top && old_player_bottom <= enemy_top) {
+          console.log("COLLIDING ENEMY ON ITS TOP")
+
+          player.setHurtboxCoordinates({
+            speed_y : -50,
+            jumping : true
+          })
+
+        }
+      }
+    })
+
+  }
+
   updateWorld() {
-    this.world.player.speed_y += this.world.gravity;
-    this.world.player.update();
 
-    this.world.player.speed_x *= this.world.friction;
-    this.world.player.speed_y *= this.world.friction;
+    let charactersToUpdate = [this.world.player, ...this.world.enemies];
 
-    this.collideObjectWithWorld(this.world.player);
+    // Update each character with gravity and friction
+    // Handle collision with world
+    charactersToUpdate.forEach(character => {
+      character.speed_y += this.world.gravity;
+      character.update();
 
+      character.speed_x *= this.world.friction;
+      character.speed_y *= this.world.friction;
+
+      this.collideObjectWithWorld(character);
+    })
+
+    this.collidePlayerWithEnemies(this.world.player);
 
     // Loop on all obstacles
     let obstacles = document.querySelectorAll('.obstacle');
@@ -150,11 +188,18 @@ class Game {
 
     // render player
     this.world.player.render();
+
+    // render Enemies
+    this.world.enemies.forEach(enemy => enemy.render())
   }
 
   gameLoop() {
 
-    this.world.player.currentActions = ['character'];
+    // Reset player state
+    this.world.player.resetState();
+
+    // Reset enemies state
+    this.world.enemies.forEach(enemy => enemy.resetState())
 
     if ( this.controls.left.active )  { this.world.player.moveLeft() }
     if ( this.controls.right.active ) { this.world.player.moveRight() }
@@ -172,9 +217,14 @@ class Game {
 
   }
 
-  addCharacter(character) {
+  addPlayer(character) {
     this.world.player = character;
     this.world.DOMcontainer.appendChild(character.DOMcontainer);
+  }
+
+  addEnemy(enemy) {
+    this.world.enemies.push(enemy)
+    this.world.DOMcontainer.appendChild(enemy.DOMcontainer);
   }
 
   listenToControls() {

@@ -13,6 +13,9 @@
   background-repeat: repeat;
 }
 
+/**
+ * OBSTACLES
+ */
 .obstacle {
   position: absolute;
 }
@@ -27,18 +30,29 @@
   width:32px;
 }
 
+#obstacle0 {  bottom:0px; left:300px; }
 #obstacle1 {  bottom:100px; left:100px; }
 #obstacle2 {  bottom:200px; left:150px; }
 #obstacle3 {  bottom:250px; left:250px; }
 #obstacle4 {  bottom:350px; left:50px; }
 
+/**
+ * ======= CHARACTERS =======
+ */
 .character {
-  /* background-color:lightblue; */
   background-size: cover;
-  /* border:1px solid red; */
 }
 
-.hurtbox {
+.right { transform: rotateY(0deg); }
+.left { transform: rotateY(180deg); }
+
+.reverseprite.right { transform: rotateY(180deg); }
+.reverseprite.left { transform: rotateY(0deg); }
+
+/**
+ *   #1 FROGGY
+ */
+.froggy .hurtbox {
   position: absolute;
   height:50px;
   width:30px;
@@ -46,34 +60,64 @@
   left:16px;
 }
 
-@keyframes idling {
+@keyframes froggyidling {
   100% { background-position-x: calc(-352px*2); }
 }
 
-@keyframes moving {
+@keyframes froggymoving {
   100% { background-position-x: calc(-384px*2); }
 }
 
-.idling {
+.froggy.idling {
   background-image:url(Pixel-Adventure-Pack/Characters/Ninja_Frog/Idle.png);
-  animation: idling 1s steps(11) infinite;
+  animation: froggyidling 1s steps(11) infinite;
 }
 
-.moving {
+.froggy.moving {
   background-image:url(Pixel-Adventure-Pack/Characters/Ninja_Frog/Run.png);
-  animation: moving 1s steps(12) infinite;
+  animation: froggymoving 0.5s steps(12) infinite;
 }
 
-.jumping {
+.froggy.jumping {
   background-image:url(Pixel-Adventure-Pack/Characters/Ninja_Frog/Jump.png);
 }
 
-.right {
-  transform: rotateY(0deg);
+
+/**
+ *   #2 MUSHROOM
+ */
+.mushroom {
+  /* position:absolute; width:64px; height:64px; */
 }
 
-.left {
-  transform: rotateY(180deg);
+.mushroom .hurtbox {
+  position: absolute;
+  height:40px;
+  width:32px;
+  top:24px;
+  left:16px;
+}
+
+@keyframes mushroomidling {
+  100% { background-position-x: calc(-448px*2); }
+}
+
+@keyframes mushroommoving {
+  100% { background-position-x: calc(-512px*2); }
+}
+
+.mushroom.jumping {
+  background-image:url(Pixel-Adventure-Pack/Enemies/Mushroom/Run.png);
+  background-position-x:0px;
+}
+.mushroom.idling {
+  background-image:url(Pixel-Adventure-Pack/Enemies/Mushroom/Idle.png);
+  animation: mushroomidling 1s steps(14) infinite;
+}
+
+.mushroom.moving {
+  background-image:url(Pixel-Adventure-Pack/Enemies/Mushroom/Run.png);
+  animation: mushroommoving 0.5s steps(16) infinite;
 }
 
 
