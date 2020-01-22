@@ -155,6 +155,10 @@ body {
   100% { background-position-x: calc(-384px*2); }
 }
 
+@keyframes froggyhurt {
+  100% { background-position-x: calc(-224px*2); }
+}
+
 .froggy.idling {
   background-image:url(Pixel-Adventure-Pack/Characters/Ninja_Frog/Idle.png);
   animation: froggyidling 1s steps(11) infinite;
@@ -169,6 +173,10 @@ body {
   background-image:url(Pixel-Adventure-Pack/Characters/Ninja_Frog/Jump.png);
 }
 
+.froggy.hurt {
+  background-image:url(Pixel-Adventure-Pack/Characters/Ninja_Frog/Hit.png);
+  animation: froggyhurt 0.3s steps(7) infinite;
+}
 
 /**
  *   #2 MUSHROOM

@@ -103,7 +103,7 @@ class Game {
          if (obstacle.collision.top &&
              object_bottom > obstacle_top &&
              old_object_bottom <= obstacle_top) {
-               console.log("COLLISION - BOTTOM player with TOP obstacle");
+               // console.log("COLLISION - BOTTOM player with TOP obstacle");
 
                source_obj.setHurtboxCoordinates({
                  y : obstacle_top - object.height - 1, // -1 for collision safety (avoid bugs)
@@ -118,7 +118,7 @@ class Game {
          if (obstacle.collision.left &&
              object_right > obstacle_left &&
              old_object_right <= obstacle_left) {
-               console.log("COLLISION - RIGHT player with LEFT obstacle")
+               // console.log("COLLISION - RIGHT player with LEFT obstacle")
 
                source_obj.setHurtboxCoordinates({
                  x : obstacle_left - object.width - 1, // -1 for collision safety (avoid bugs)
@@ -129,7 +129,7 @@ class Game {
          if (obstacle.collision.right &&
              object_left < obstacle_right &&
              old_object_left >= obstacle_right) {
-               console.log("COLLISION - LEFT player with RIGHT obstacle")
+               // console.log("COLLISION - LEFT player with RIGHT obstacle")
 
                source_obj.setHurtboxCoordinates({
                  x : obstacle_right + 1, // +1 for collision safety (avoid bugs)
@@ -140,7 +140,7 @@ class Game {
          if (obstacle.collision.bottom &&
              object_top < obstacle_bottom &&
              old_object_top >= obstacle_bottom) {
-               console.log("COLLISION - TOP player with BOTTOM obstacle")
+               // console.log("COLLISION - TOP player with BOTTOM obstacle")
 
                source_obj.setHurtboxCoordinates({
                  y : obstacle_bottom,
@@ -165,17 +165,20 @@ class Game {
       let enemy_top = enemyRects.y;
 
       if ( player.isColliding(enemy, 'character') ) {
-        console.log("PLAYER COLLIDING ENEMY")
 
+        // Colliding enemy on its top => JUMP !
         if ( player_bottom > enemy_top && old_player_bottom <= enemy_top) {
-          console.log("COLLIDING ENEMY ON ITS TOP")
 
           player.setHurtboxCoordinates({
             speed_y : -50,
             jumping : true
           })
 
+        // ELSE, touch enemy => dmg !
+        } else {
+          player.getHurt(1);
         }
+
       }
     })
 
@@ -223,11 +226,6 @@ class Game {
       this.collideCharWithItem(this.world.player, item)
     });
 
-    // If all objects have been grabbed
-    if ( this.totalItemsGrabbed && this.totalItemsGrabbed >= this.totalItems ) {
-      this.endGame();
-    }
-
   }
 
   renderWorld() {
@@ -238,6 +236,18 @@ class Game {
 
     // render Enemies
     this.world.enemies.forEach(enemy => enemy.render())
+  }
+
+  resolveGoal() {
+
+    // If all objects have been grabbed
+    if ( this.totalItemsGrabbed && this.totalItemsGrabbed >= this.totalItems ) {
+      this.endGame(true);
+    }
+
+    if ( this.world.player.life <= 0 ) {
+      this.endGame(false);
+    }
   }
 
   gameLoop() {
@@ -257,11 +267,19 @@ class Game {
 
     this.updateWorld();
     this.renderWorld();
+    this.resolveGoal();
 
     if (this.running) {
-      setTimeout(this.currentLoopId = requestAnimationFrame((timestamp) => {
+      // Limited FPS
+      // setTimeout(this.currentLoopId = requestAnimationFrame((timestamp) => {
+      //   this.gameLoop(timestamp);
+      // }), 1000/60)
+
+      // Maximum FPS
+      this.currentLoopId = requestAnimationFrame((timestamp) => {
         this.gameLoop(timestamp);
-      }), 1000/30)
+      })
+
     }
   }
 
@@ -349,12 +367,19 @@ class Game {
     })
   }
 
-  endGame() {
+  endGame(youWin) {
     this.running = false;
+
     if (this.currentLoopId) {
       cancelAnimationFrame(this.currentLoopId);
     }
-    alert("YOU WIN !")
+
+    if (youWin) {
+      alert("YOU WIN !")
+    } else {
+      alert("BIG FAT LOOSER !")
+    }
+
   }
 
 }

@@ -38,7 +38,22 @@ class Character {
    }
 
    resetState() {
+
+     // Reset states array with base states
      this.currentStates = [...this.baseStates];
+
+     // If last time hurt was less than 300ms,
+     // Keep pushing 'hurt' into currentStates
+     // So that we have the CSS class hurt
+     // And then the CSS animation has time to play
+     if ( this.lastTimeHurt ) {
+       let now = new Date().getTime();
+       var timeDiff = now - this.lastTimeHurt; //in ms
+       if ( timeDiff < 300 ) {
+         this.currentStates.push('hurt');
+       } else { this.lastTimeHurt = null; }
+     }
+
    }
 
    // Called each game loop #1
@@ -63,6 +78,17 @@ class Character {
      this.speed_x += 1
    }
 
+   getHurt(dmg) {
+
+     this.life -= dmg;
+     this.jumping = false;
+
+     this.lastTimeHurt = new Date().getTime();
+     this.currentStates.push('hurt');
+     this.speed_x = this.direction === 'right' ? -20 : 20;
+
+   }
+
    // Called each game loop #2
    update() {
      // this.x = Math.round(this.x + this.speed_x)
@@ -83,16 +109,29 @@ class Character {
 
    // Called each game loop #3
    render() {
+
      // Reset all css classes
      this.DOMcontainer.className = '';
 
-     // default behavior
-     if ( this.currentStates.length === this.baseStates.length ) { this.currentStates.push('idling') }
+     // BY ORDER OF PRIORITY
+     if (this.currentStates.includes('hurt')) {
+
+         // TODO - Maybe we need to remove the class 'moving'
+         //        So that the css class doesnt overidde the 'hurt' class ?
+         // let movingIndex = this.currentStates.indexOf('moving');
+         // if(movingIndex !== -1) { this.currentStates.splice(movingIndex, 1) }
+
+     } else if( this.currentStates.length === this.baseStates.length ) {
+       // default behavior
+       // If there is no there is no other states than the base baseStates
+       // Character needs to idle
+       this.currentStates.push('idling')
+     }
 
      // Always put the direction so character faces the right way
      this.currentStates.push(this.direction);
 
-     // Loop on actions to add css classes
+     // Loop on actions to add css classes to the DOM element
      this.currentStates.forEach(action => {
        this.DOMcontainer.classList.add(action)
      })
