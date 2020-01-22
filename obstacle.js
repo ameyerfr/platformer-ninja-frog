@@ -5,7 +5,7 @@ class Obstacle {
     this.moving = false;
 
     if (config.type === "platform") {
-      this.collision = { bottom:false, top:true, left:true, right:true}
+      this.collision = { top:true, bottom:false, left:false, right:false}
     } else {
       this.collision = { top:true, right:true, bottom:true, left:true}
     }

@@ -1,6 +1,7 @@
 class Game {
 
   constructor() {
+    this.groundElement = document.getElementById('ground');
     this.world = {
       DOMcontainer : document.getElementById('map-container'),
       gravity : 1.5,
@@ -248,6 +249,22 @@ class Game {
     window.onkeyup   = this.controlsHandler.bind(this);
   }
 
+  // Called by the init()
+  generateGroundTiles() {
+    let worldWidth = this.getWorldWidth();
+    let numberOfTiles = Math.ceil(worldWidth/44)
+    
+    for(let i = 0; i <= numberOfTiles; i++) {
+      let t = document.createElement('div')
+      t.setAttribute('id', `groundTile-${i}`);
+      t.className = 'ground-tile';
+      t.style.position = 'absolute';
+      t.style.left = `${i * 44}px`;
+      this.groundElement.appendChild(t);
+    }
+
+  }
+
   /**
    * GENERATE A GAME - CALL #1
    */
@@ -264,6 +281,8 @@ class Game {
    * GENERATE A GAME - CALL #2
    */
   init() {
+
+    this.generateGroundTiles();
 
     this.listenToControls();
 

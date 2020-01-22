@@ -38,6 +38,7 @@ window.onload = function() {
     {id:4, type:'hardblock-32', h:32, w:32, left:850, bottom:330},
     {id:5, type:'platform',     h:10, w:96, left:300, bottom:350, animate:{keys:[{transform:'translateX(-50px)'},{transform:'translateX(50px)'}], duration:2000} },
     {id:6, type:'platform',     h:10, w:96, left:550, bottom:350, animate:{keys:[{transform:'translateX(50px)'},{transform:'translateX(-50px)'}], duration:2000} },
+    {id:7, type:'platform',     h:10, w:96, left:550, bottom:30, animate:{keys:[{transform:'translateX(50px)'},{transform:'translateX(-50px)'}], duration:2000} }
 
   ])
 
