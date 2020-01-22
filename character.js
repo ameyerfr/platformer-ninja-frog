@@ -58,7 +58,10 @@ class Character {
 
    // Called each game loop #1
    jump() {
-     if(!this.jumping) {
+     // Jump only if :
+     //  - If not already jumping
+     //  - If vertical speed is less or equal to 0 ( meaning not falling )
+     if(!this.jumping && this.speed_y <= 0) {
        this.jumping = true;
        this.speed_y -= this.jumpHeight;
      }

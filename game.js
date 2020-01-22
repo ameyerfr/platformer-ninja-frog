@@ -271,14 +271,14 @@ class Game {
 
     if (this.running) {
       // Limited FPS
-      // setTimeout(this.currentLoopId = requestAnimationFrame((timestamp) => {
-      //   this.gameLoop(timestamp);
-      // }), 1000/60)
+      setTimeout(this.currentLoopId = requestAnimationFrame((timestamp) => {
+        this.gameLoop(timestamp);
+      }), 1000/60)
 
       // Maximum FPS
-      this.currentLoopId = requestAnimationFrame((timestamp) => {
-        this.gameLoop(timestamp);
-      })
+      // this.currentLoopId = requestAnimationFrame((timestamp) => {
+      //   this.gameLoop(timestamp);
+      // })
 
     }
   }
