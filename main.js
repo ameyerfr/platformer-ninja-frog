@@ -25,6 +25,7 @@ window.onload = function() {
       width:32,
       height:40
     },
+    initialPosition:{left:500, bottom:0},
     reverseSpriteDir:true,
     jumpHeight:15
   });
@@ -32,14 +33,16 @@ window.onload = function() {
   window.game.addPlayer(froggy);
 
   window.game.generateObstacles([
-    {id:1, type:'hardblock-32', h:32, w:32, left:120, bottom:80},
-    {id:2, type:'hardblock-64', h:64, w:64, right:150, top:150},
-    {id:3, type:'hardblock-32', h:32, w:32, left:200, bottom:200},
-    {id:4, type:'hardblock-32', h:32, w:32, left:850, bottom:330},
-    {id:5, type:'platform',     h:10, w:96, left:300, bottom:350, animate:{keys:[{transform:'translateX(-50px)'},{transform:'translateX(50px)'}], duration:2000} },
-    {id:6, type:'platform',     h:10, w:96, left:550, bottom:350, animate:{keys:[{transform:'translateX(50px)'},{transform:'translateX(-50px)'}], duration:2000} },
-    {id:7, type:'platform',     h:10, w:96, left:550, bottom:30, animate:{keys:[{transform:'translateX(50px)'},{transform:'translateX(-50px)'}], duration:2000} }
-
+    {id:1, type:'hardblock-h',  left:0, bottom:120},
+    {id:2, type:'hardblock-h',  left:96, bottom:152},
+    {id:3, type:'hardblock-v',  left:250, bottom:0},
+    {id:4, type:'hardblock-h',  left:192, bottom:184},
+    {id:5, type:'hardblock-h',  left:288, bottom:184},
+    {id:6, type:'hardblock-h',  left:384, bottom:184},
+    {id:6, type:'hardblock-h',  left:384, bottom:184},
+    {id:6, type:'hardblock-32',  left:608, bottom:184},
+    {id:99, type:'platform',     h:10, w:96, left:300, bottom:350, animate:{keys:[{transform:'translateX(-50px)'},{transform:'translateX(50px)'}], duration:2000} },
+    {id:100, type:'platform',     h:10, w:96, left:550, bottom:350, animate:{keys:[{transform:'translateX(50px)'},{transform:'translateX(-50px)'}], duration:2000} }
   ])
 
 

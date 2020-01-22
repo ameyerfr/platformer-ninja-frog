@@ -15,7 +15,7 @@ body {
   width:100%;
   height:calc(100% - 45px);
   overflow: hidden;
-  background-image:url(Pixel-Adventure-Pack/background/Gray.png);
+  background-image:url(Pixel-Adventure-Pack/background/Brown.png);
   background-repeat: repeat;
   background-size:150px;
 }
@@ -74,6 +74,27 @@ body {
   height:64px;
   width:64px;
 }
+
+/* Horizontal hardblock 32px by 96px */
+.hardblock-h {
+  background-image:url(Pixel-Adventure-Pack/Terrain/Terrain.png);
+  background-position-y:calc(0px*2);
+  background-position-x:calc(160px*2);
+  background-size: calc(352px*2);
+  height:32px;
+  width:96px;
+}
+
+/* Horizontal hardblock 96px by 32px */
+.hardblock-v {
+  background-image:url(Pixel-Adventure-Pack/Terrain/Terrain.png);
+  background-position-y:calc(0px*2);
+  background-position-x:calc(112px*2);
+  background-size: calc(352px*2);
+  height:96px;
+  width:32px;
+}
+
 
 .platform {
   background-image:url(Pixel-Adventure-Pack/Terrain/Terrain.png);

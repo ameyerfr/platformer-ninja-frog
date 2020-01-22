@@ -16,12 +16,23 @@ class Character {
      this.speed_y = 0;
      this.jumpHeight = config.jumpHeight || 40; // 30 max to be less than tile size (32px)
      this.hurtboxOffsets = config.hurtbox;
+     this.initialPosition = config.initialPosition || {left:0, bottom:0}
 
      this.baseStates.push('character');
      this.baseStates.push(config.name);
      if (config.reverseSpriteDir) { this.baseStates.push('reverseprite') }
 
      this.DOMcontainer = this.initialRender(config);
+
+   }
+
+   setInitialPosition(worldHeight, worldWidth) {
+
+     if (this.initialPosition.hasOwnProperty('left'))   { this.x = this.initialPosition.left }
+     if (this.initialPosition.hasOwnProperty('right'))  { this.x = worldWidth - this.width - this.initialPosition.right }
+     if (this.initialPosition.hasOwnProperty('top'))    { this.y = this.initialPosition.top }
+     if (this.initialPosition.hasOwnProperty('bottom')) { this.y = worldHeight - this.height - this.initialPosition.bottom }
+
    }
 
    resetState() {

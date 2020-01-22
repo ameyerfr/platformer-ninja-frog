@@ -19,8 +19,8 @@ class Obstacle {
     el.setAttribute('id', `obstacle-${config.id}`)
     el.className = `obstacle ${config.type}`
 
-    el.style.height = `${config.h} px`;
-    el.style.width = `${config.w} px`;
+    // el.style.height = `${config.h} px`;
+    // el.style.width = `${config.w} px`;
 
     if (config.hasOwnProperty('top')){ el.style.top = `${config.top}px` }
     if (config.hasOwnProperty('right')){ el.style.right = `${config.right}px` }

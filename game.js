@@ -236,11 +236,19 @@ class Game {
 
   addPlayer(character) {
     this.world.player = character;
+
+    // Set player initial position in world
+    character.setInitialPosition(this.getWorldHeight(), this.getWorldWidth())
+
     this.world.DOMcontainer.appendChild(character.DOMcontainer);
   }
 
   addEnemy(enemy) {
     this.world.enemies.push(enemy)
+
+    // Set enemy initial position in world
+    enemy.setInitialPosition(this.getWorldHeight(), this.getWorldWidth())
+
     this.world.DOMcontainer.appendChild(enemy.DOMcontainer);
   }
 
@@ -253,7 +261,7 @@ class Game {
   generateGroundTiles() {
     let worldWidth = this.getWorldWidth();
     let numberOfTiles = Math.ceil(worldWidth/44)
-    
+
     for(let i = 0; i <= numberOfTiles; i++) {
       let t = document.createElement('div')
       t.setAttribute('id', `groundTile-${i}`);
