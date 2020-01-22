@@ -31,6 +31,20 @@ window.onload = function() {
     jumpHeight:15
   });
 
+  let mushroom2 = new Character({
+    name:'mushroom',
+    hurtbox : {
+      top:24,
+      left:16,
+      width:32,
+      height:40
+    },
+    initialPosition:{left:300, bottom:250},
+    botMove:{goLeft:100, goRight:100, offset:200, firstMove:true},
+    reverseSpriteDir:true,
+    jumpHeight:15
+  });
+
   window.game.generateObstacles([
     {id:1, type:'hardblock-h',  left:0, bottom:120},
     {id:2, type:'hardblock-h',  left:96, bottom:152},
@@ -65,6 +79,7 @@ window.onload = function() {
 
   window.game.addPlayer(froggy);
   window.game.addEnemy(mushroom);
+  // window.game.addEnemy(mushroom2);
 
   window.game.init();
 }

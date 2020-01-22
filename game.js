@@ -5,7 +5,7 @@ class Game {
 
     this.world = {
       DOMcontainer : document.getElementById('map-container'),
-      gravity : 1.5,
+      gravity : 1,
       friction : 0.85,
       player : null,
       enemies : [],
@@ -188,11 +188,11 @@ class Game {
 
   updateWorld() {
 
-    let charactersToUpdate = [this.world.player, ...this.world.enemies];
+    let allCharacters = [this.world.player, ...this.world.enemies];
 
     // Update each character with gravity and friction
     // Handle collision with world boundaries
-    charactersToUpdate.forEach(character => {
+    allCharacters.forEach(character => {
       character.speed_y += this.world.gravity;
       character.update();
 
@@ -205,12 +205,17 @@ class Game {
     // Collide player with all the enemies of the world
     this.collidePlayerWithEnemies(this.world.player);
 
-    // Collide player with all the obstacles of the world
-    this.world.obstacles.forEach(obstacle => {
-      this.collideCharWithObstacle(this.world.player, obstacle)
+    // Collide all characters of the world (player and enemies)
+    // With all the obstacles of the world
+    allCharacters.forEach(character => {
+
+      this.world.obstacles.forEach(obstacle => {
+        this.collideCharWithObstacle(character, obstacle)
+      });
+      
     });
 
-    // Collide player with all the items of the world
+    // Collide Player with all the items of the world
     this.world.items.forEach(item => {
       this.collideCharWithItem(this.world.player, item)
     });
