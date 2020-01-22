@@ -46,6 +46,9 @@ window.onload = function() {
     {id:12, type:'hardblock-h',  left:288, bottom:350},
     {id:13, type:'hardblock-h',  left:384, bottom:350},
     {id:14, type:'hardblock-v',  left:448, bottom:382},
+    // {id:15, type:'hardblock-h',  left:488, bottom:0},
+    // {id:16, type:'hardblock-h',  left:582, bottom:0},
+    // {id:17, type:'hardblock-h',  left:676, bottom:0},
 
     {id:99, type:'platform',     h:10, w:96, left:650, bottom:350, animate:{keys:[{transform:'translateX(-50px)'},{transform:'translateX(50px)'}], duration:2000} }
   ])

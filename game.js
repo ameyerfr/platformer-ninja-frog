@@ -101,7 +101,7 @@ class Game {
                console.log("COLLISION - BOTTOM player with TOP obstacle");
 
                source_obj.setHurtboxCoordinates({
-                 y : obstacle_top - object.height, // - 0.01,
+                 y : obstacle_top - object.height, // - 0.01
                  speed_y : 0,
                  jumping : false
                })
@@ -121,6 +121,7 @@ class Game {
          if (obstacle.collision.right &&
              object_left < obstacle_right &&
              old_object_left >= obstacle_right) {
+               console.log(old_object_left, object_left, obstacle_right, object_bottom)
                console.log("COLLISION - LEFT player with RIGHT obstacle")
 
                source_obj.setHurtboxCoordinates({
@@ -253,7 +254,7 @@ class Game {
 
     // If enemy has bot moves to make, launch bot mode
     if (enemy.botMove) { enemy.launchBotMode() }
-    
+
   }
 
   listenToControls() {
