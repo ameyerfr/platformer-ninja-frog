@@ -17,6 +17,7 @@ class Character {
      this.jumpHeight = config.jumpHeight || 40; // 30 max to be less than tile size (32px)
      this.hurtboxOffsets = config.hurtbox;
      this.initialPosition = config.initialPosition || {left:0, bottom:0}
+     this.botMove = config.botMove || false;
 
      this.baseStates.push('character');
      this.baseStates.push(config.name);
@@ -144,6 +145,7 @@ class Character {
      Object.assign(this, assignObj);
    }
 
+   // Is this character colliding with another char ?
    isColliding(otherChar) {
 
      let character = this.getHurtBoxCoordinates();
@@ -158,6 +160,68 @@ class Character {
      }
 
      return false;
+   }
+
+   launchBotMode() {
+
+     setInterval(function(){
+       if ( !this.intervalLeft && this.direction === 'left') {
+         this.botMoveLeft();
+       } else if ( !this.intervalRight && this.direction === 'right') {
+         this.botMoveRight();
+       }
+     }.bind(this), 10)
+
+   }
+
+   botMoveLeft() {
+     console.log("===botMoveLeft");
+     let targetX;
+     let originalX = Math.round(this.x);
+
+     if ( this.botMove.firstMove ) {
+       targetX   = originalX - this.botMove.goLeft;
+       this.botMove.firstMove = false;
+     } else {
+       targetX   = originalX - this.botMove.offset;
+     }
+
+     console.log("left target : ", targetX);
+
+     this.intervalLeft = setInterval((function() {
+       if ( this.x <= targetX ) {
+         clearInterval(this.intervalLeft);
+         this.intervalLeft = null;
+         this.direction = 'right';
+         return;
+       }
+       this.moveLeft();
+     }).bind(this), 100)
+   }
+
+   botMoveRight() {
+     console.log("===botMoveRight");
+     let targetX;
+     let originalX = Math.round(this.x);
+
+     if ( this.botMove.firstMove ) {
+       targetX   = originalX + this.botMove.goRight;
+       this.botMove.firstMove = false;
+     } else {
+       targetX   = originalX + this.botMove.offset;
+     }
+
+     console.log("right target : ", targetX);
+
+     this.intervalRight = setInterval((function() {
+       if ( this.x >= targetX ) {
+         clearInterval(this.intervalRight);
+         this.intervalRight = null;
+         this.direction = 'left';
+         return;
+       }
+       this.moveRight();
+     }).bind(this), 100)
    }
 
 }

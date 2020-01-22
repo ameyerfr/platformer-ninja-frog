@@ -250,6 +250,10 @@ class Game {
     enemy.setInitialPosition(this.getWorldHeight(), this.getWorldWidth())
 
     this.world.DOMcontainer.appendChild(enemy.DOMcontainer);
+
+    // If enemy has bot moves to make, launch bot mode
+    if (enemy.botMove) { enemy.launchBotMode() }
+    
   }
 
   listenToControls() {
