@@ -110,6 +110,9 @@ class Game {
                  speed_y : 0,
                  jumping : false
                })
+
+               return; // BREAK to avoid weird behaviors when walking on tiles
+                       // TODO : fix bug when walking on tiles from right to left
          }
 
          if (obstacle.collision.left &&
@@ -126,7 +129,6 @@ class Game {
          if (obstacle.collision.right &&
              object_left < obstacle_right &&
              old_object_left >= obstacle_right) {
-               console.log(old_object_left, object_left, obstacle_right, object_bottom)
                console.log("COLLISION - LEFT player with RIGHT obstacle")
 
                source_obj.setHurtboxCoordinates({
@@ -209,10 +211,11 @@ class Game {
     // With all the obstacles of the world
     allCharacters.forEach(character => {
 
+      // Each character with each obstacle
       this.world.obstacles.forEach(obstacle => {
         this.collideCharWithObstacle(character, obstacle)
       });
-      
+
     });
 
     // Collide Player with all the items of the world
@@ -228,8 +231,7 @@ class Game {
   }
 
   renderWorld() {
-    // render world
-    // world render
+    // render world changes here
 
     // render player
     this.world.player.render();
@@ -332,7 +334,6 @@ class Game {
     this.totalItemsGrabbed = 0;
 
   }
-
 
   /**
    * GENERATE A GAME - CALL #3

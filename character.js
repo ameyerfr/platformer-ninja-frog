@@ -103,7 +103,7 @@ class Character {
 
    initialRender(config) {
      let charContainer = document.createElement('div');
-     charContainer.setAttribute('id', `${this.name}-container`)
+     // charContainer.setAttribute('id', `${this.name}-container`)
 
      charContainer.style.position = 'absolute';
      charContainer.style.height = this.height + 'px';
@@ -168,6 +168,8 @@ class Character {
    }
 
    launchBotMode() {
+
+     this.direction = this.botMove.firstMove === 'right' ? 'right' : 'left';
 
      setInterval(function(){
        if ( !this.intervalLeft && this.direction === 'left') {
