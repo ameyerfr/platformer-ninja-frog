@@ -46,11 +46,21 @@ window.onload = function() {
     {id:12, type:'hardblock-h',  left:288, bottom:350},
     {id:13, type:'hardblock-h',  left:384, bottom:350},
     {id:14, type:'hardblock-v',  left:448, bottom:382},
-    // {id:15, type:'hardblock-h',  left:488, bottom:0},
-    // {id:16, type:'hardblock-h',  left:582, bottom:0},
-    // {id:17, type:'hardblock-h',  left:676, bottom:0},
+    {id:15, type:'hardblock-64',  left:478, bottom:414},
 
-    {id:99, type:'platform',     h:10, w:96, left:650, bottom:350, animate:{keys:[{transform:'translateX(-50px)'},{transform:'translateX(50px)'}], duration:2000} }
+    {id:99, type:'platform',     h:10, w:96, left:650, bottom:350, animate:{keys:[{transform:'translateX(-50px)'},{transform:'translateX(50px)'}], duration:2000} },
+    {id:99, type:'platform',     h:10, w:96, left:750, bottom:450, animate:{keys:[{transform:'translateX(50px)'},{transform:'translateX(-50px)'}], duration:3000} },
+    {id:99, type:'platform',     h:10, w:96, left:550, bottom:480, animate:{keys:[{transform:'translateX(50px)'},{transform:'translateX(-50px)'}], duration:4000} }
+  ])
+
+  window.game.generateItems([
+    { type:'apple', left: 150, bottom: 10 },
+    { type:'apple', left: 350, bottom: 10 },
+    { type:'apple', left: 700, bottom: 10 },
+    { type:'apple', left: 40, bottom: 160 },
+    { type:'apple', left: 750, bottom: 400 },
+    { type:'apple', left: 850, bottom: 500 },
+    { type:'apple', left: 40, bottom: 400 }
   ])
 
   window.game.addPlayer(froggy);

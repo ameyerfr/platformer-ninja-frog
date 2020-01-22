@@ -1,20 +1,25 @@
 class Game {
 
   constructor() {
-    this.groundElement = document.getElementById('ground');
+    this.running = true;
+
     this.world = {
       DOMcontainer : document.getElementById('map-container'),
       gravity : 1.5,
       friction : 0.85,
       player : null,
       enemies : [],
-      obstacles : []
-    }
+      obstacles : [],
+      items : []
+    };
+
     this.controls = {
       left  : { active : false, pressed : false },
       right : { active : false, pressed : false },
       jump  : { active : false, pressed : false }
-    }
+    };
+
+    this.groundElement = document.getElementById('ground');
   }
 
   controlsHandler(e) {
@@ -157,7 +162,7 @@ class Game {
       let enemyRects = enemy.getHurtBoxCoordinates();
       let enemy_top = enemyRects.y;
 
-      if ( player.isColliding(enemy) ) {
+      if ( player.isColliding(enemy, 'character') ) {
         console.log("PLAYER COLLIDING ENEMY")
 
         if ( player_bottom > enemy_top && old_player_bottom <= enemy_top) {
@@ -172,6 +177,13 @@ class Game {
       }
     })
 
+  }
+
+  collideCharWithItem(player, item) {
+    if ( !item.hidden && player.isColliding(item, 'item') ) {
+      item.isGrabbed();
+      this.totalItemsGrabbed++;
+    }
   }
 
   updateWorld() {
@@ -197,6 +209,16 @@ class Game {
     this.world.obstacles.forEach(obstacle => {
       this.collideCharWithObstacle(this.world.player, obstacle)
     });
+
+    // Collide player with all the items of the world
+    this.world.items.forEach(item => {
+      this.collideCharWithItem(this.world.player, item)
+    });
+
+    // If all objects have been grabbed
+    if ( this.totalItemsGrabbed && this.totalItemsGrabbed >= this.totalItems ) {
+      this.endGame();
+    }
 
   }
 
@@ -229,10 +251,11 @@ class Game {
     this.updateWorld();
     this.renderWorld();
 
-    setTimeout(requestAnimationFrame((timestamp) => {
-      this.gameLoop(timestamp);
-    }), 1000/30)
-
+    if (this.running) {
+      setTimeout(this.currentLoopId = requestAnimationFrame((timestamp) => {
+        this.gameLoop(timestamp);
+      }), 1000/30)
+    }
   }
 
   addPlayer(character) {
@@ -293,6 +316,22 @@ class Game {
   /**
    * GENERATE A GAME - CALL #2
    */
+  generateItems(items) {
+
+    items.forEach(item_config => {
+      item_config.parentEl = this.world.DOMcontainer;
+      this.world.items.push(new Item(item_config))
+    })
+
+    this.totalItems = this.world.items.length;
+    this.totalItemsGrabbed = 0;
+
+  }
+
+
+  /**
+   * GENERATE A GAME - CALL #3
+   */
   init() {
 
     this.generateGroundTiles();
@@ -302,6 +341,14 @@ class Game {
     requestAnimationFrame((timestamp) => {
       this.gameLoop(timestamp);
     })
+  }
+
+  endGame() {
+    this.running = false;
+    if (this.currentLoopId) {
+      cancelAnimationFrame(this.currentLoopId);
+    }
+    alert("YOU WIN !")
   }
 
 }

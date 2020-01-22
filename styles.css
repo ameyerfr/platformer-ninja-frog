@@ -106,6 +106,24 @@ body {
 }
 
 /**
+ * ======= ITEMS =======
+ */
+
+@keyframes appleMove {
+  100% { background-position-x: -544px; }
+}
+
+.apple {
+  background-image:url(assets/sprites/apple.png);
+  background-position-y:-5px;
+  background-size: 544px;
+  animation: appleMove 2s steps(17) infinite;
+  width:24px;
+  height:18px;
+  margin-left:-8px;
+}
+
+/**
  * ======= CHARACTERS =======
  */
 .character {

@@ -145,11 +145,16 @@ class Character {
      Object.assign(this, assignObj);
    }
 
-   // Is this character colliding with another char ?
-   isColliding(otherChar) {
+   // Is this character colliding with another char / item ?
+   isColliding(object, typeOfCollision) {
+       let obstacle;
+       let character = this.getHurtBoxCoordinates();
 
-     let character = this.getHurtBoxCoordinates();
-     let obstacle  = otherChar.getHurtBoxCoordinates();
+     if (typeOfCollision === 'character') {
+       obstacle  = object.getHurtBoxCoordinates();
+     } else if (typeOfCollision === 'item') {
+       obstacle  = object.getRects();
+     }
 
      // THERE IS AABB Collision
      if (character.x < obstacle.x + obstacle.width &&
@@ -175,7 +180,6 @@ class Character {
    }
 
    botMoveLeft() {
-     console.log("===botMoveLeft");
      let targetX;
      let originalX = Math.round(this.x);
 
@@ -186,8 +190,6 @@ class Character {
        targetX   = originalX - this.botMove.offset;
      }
 
-     console.log("left target : ", targetX);
-
      this.intervalLeft = setInterval((function() {
        if ( this.x <= targetX ) {
          clearInterval(this.intervalLeft);
@@ -197,10 +199,10 @@ class Character {
        }
        this.moveLeft();
      }).bind(this), 100)
+
    }
 
    botMoveRight() {
-     console.log("===botMoveRight");
      let targetX;
      let originalX = Math.round(this.x);
 
@@ -211,8 +213,6 @@ class Character {
        targetX   = originalX + this.botMove.offset;
      }
 
-     console.log("right target : ", targetX);
-
      this.intervalRight = setInterval((function() {
        if ( this.x >= targetX ) {
          clearInterval(this.intervalRight);
@@ -222,6 +222,7 @@ class Character {
        }
        this.moveRight();
      }).bind(this), 100)
+
    }
 
 }

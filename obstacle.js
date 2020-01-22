@@ -16,7 +16,7 @@ class Obstacle {
   initialize(config) {
     let el = document.createElement('div')
 
-    el.setAttribute('id', `obstacle-${config.id}`)
+    // el.setAttribute('id', `obstacle-${config.id}`)
     el.className = `obstacle ${config.type}`
 
     // el.style.height = `${config.h} px`;
