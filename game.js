@@ -5,7 +5,7 @@ class Game {
 
     this.world = {
       DOMcontainer : document.getElementById('map-container'),
-      gravity : 1,
+      gravity : 1.5,
       friction : 0.85,
       player : null,
       enemies : [],
@@ -106,7 +106,7 @@ class Game {
                console.log("COLLISION - BOTTOM player with TOP obstacle");
 
                source_obj.setHurtboxCoordinates({
-                 y : obstacle_top - object.height, // - 0.01
+                 y : obstacle_top - object.height - 1, // -1 for collision safety (avoid bugs)
                  speed_y : 0,
                  jumping : false
                })
@@ -121,7 +121,7 @@ class Game {
                console.log("COLLISION - RIGHT player with LEFT obstacle")
 
                source_obj.setHurtboxCoordinates({
-                 x : obstacle_left - object.width, // - 0.01,
+                 x : obstacle_left - object.width - 1, // -1 for collision safety (avoid bugs)
                  speed_x : 0
                })
          }
@@ -132,7 +132,7 @@ class Game {
                console.log("COLLISION - LEFT player with RIGHT obstacle")
 
                source_obj.setHurtboxCoordinates({
-                 x : obstacle_right, // + 0.01,
+                 x : obstacle_right + 1, // +1 for collision safety (avoid bugs)
                  speed_x : 0
                })
          }

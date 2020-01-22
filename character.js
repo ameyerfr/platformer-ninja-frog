@@ -5,6 +5,7 @@ class Character {
      this.baseStates = [];
      this.currentStates = [];
      this.direction = 'right';
+     this.life = config.life || 1;
      this.jumping = false;
      this.x_old = 0;
      this.y_old = 0;
@@ -14,7 +15,7 @@ class Character {
      this.width = 64;
      this.speed_x = 0;
      this.speed_y = 0;
-     this.jumpHeight = config.jumpHeight || 40; // 30 max to be less than tile size (32px)
+     this.jumpHeight = config.jumpHeight || 40; // 30 max to be less than tile size (32px) ?
      this.hurtboxOffsets = config.hurtbox;
      this.initialPosition = config.initialPosition || {left:0, bottom:0}
      this.botMove = config.botMove || false;

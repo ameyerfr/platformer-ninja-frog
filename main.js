@@ -8,6 +8,7 @@ window.onload = function() {
 
   let froggy = new Character({
     name:'froggy',
+    life: 3,
     hurtbox : {
       top:12,
       left:16,
@@ -23,10 +24,10 @@ window.onload = function() {
       top:24,
       left:16,
       width:32,
-      height:40
+      height:38
     },
-    initialPosition:{left:500, bottom:0},
-    botMove:{goLeft:100, goRight:100, offset:200, firstMove:'right'},
+    initialPosition:{left:520, bottom:0},
+    botMove:{goLeft:150, goRight:150, offset:300, firstMove:'right'},
     reverseSpriteDir:true,
     jumpHeight:15
   });
@@ -37,10 +38,10 @@ window.onload = function() {
       top:24,
       left:16,
       width:32,
-      height:40
+      height:38
     },
     initialPosition:{left:250, bottom:250},
-    botMove:{goLeft:80, goRight:80, offset:160, firstMove:'left'},
+    botMove:{goLeft:70, goRight:70, offset:140, firstMove:'left'},
     reverseSpriteDir:true,
     jumpHeight:15
   });
@@ -51,10 +52,10 @@ window.onload = function() {
       top:24,
       left:16,
       width:32,
-      height:40
+      height:38
     },
     initialPosition:{left:300, bottom:400},
-    botMove:{goLeft:80, goRight:80, offset:160, firstMove:'right'},
+    botMove:{goLeft:70, goRight:70, offset:140, firstMove:'right'},
     reverseSpriteDir:true,
     jumpHeight:15
   });
@@ -92,7 +93,7 @@ window.onload = function() {
   window.game.generateItems([
     { type:'apple', left: 150, bottom: 10 },
     { type:'apple', left: 350, bottom: 10 },
-    { type:'apple', left: 700, bottom: 10 },
+    { type:'apple', left: 800, bottom: 10 },
     { type:'apple', left: 40, bottom: 160 },
     { type:'apple', left: 750, bottom: 400 },
     { type:'apple', left: 850, bottom: 500 },
