@@ -8,7 +8,6 @@ window.onload = function() {
 
   let froggy = new Character({
     name:'froggy',
-    life: 3,
     hurtbox : {
       top:12,
       left:16,

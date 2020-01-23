@@ -5,7 +5,7 @@ class Character {
      this.baseStates = [];
      this.currentStates = [];
      this.direction = 'right';
-     this.life = config.life || 1;
+     this.life = 1;
      this.jumping = false;
      this.x_old = 0;
      this.y_old = 0;

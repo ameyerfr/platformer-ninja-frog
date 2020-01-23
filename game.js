@@ -2,7 +2,8 @@ class Game {
 
   constructor() {
     this.running = true;
-
+    this.playerMaxLifes = 5;
+    this.lifesDOMContainer = document.getElementById('lifes');
     this.world = {
       DOMcontainer : document.getElementById('map-container'),
       gravity : 1.5,
@@ -177,6 +178,7 @@ class Game {
         // ELSE, touch enemy => dmg !
         } else {
           player.getHurt(1);
+          this.removeALife();
         }
 
       }
@@ -242,15 +244,17 @@ class Game {
 
     // If all objects have been grabbed
     if ( this.totalItemsGrabbed && this.totalItemsGrabbed >= this.totalItems ) {
-      this.endGame(true);
+      this.stopGameLoop();
+      this.endScreen(true);
     }
 
     if ( this.world.player.life <= 0 ) {
-      this.endGame(false);
+      this.stopGameLoop();
+      this.endScreen(false);
     }
   }
 
-  gameLoop() {
+  gameLoop(timestamp) {
 
     // Reset player state
     this.world.player.resetState();
@@ -270,8 +274,9 @@ class Game {
     this.resolveGoal();
 
     if (this.running) {
+
       // Limited FPS
-      setTimeout(this.currentLoopId = requestAnimationFrame((timestamp) => {
+      this.currentTimeoutId = setTimeout(this.currentLoopId = requestAnimationFrame((timestamp) => {
         this.gameLoop(timestamp);
       }), 1000/60)
 
@@ -281,10 +286,14 @@ class Game {
       // })
 
     }
+
   }
 
   addPlayer(character) {
     this.world.player = character;
+
+    // Set his Life
+    this.world.player.life = this.playerMaxLifes;
 
     // Set player initial position in world
     character.setInitialPosition(this.getWorldHeight(), this.getWorldWidth())
@@ -326,6 +335,20 @@ class Game {
 
   }
 
+  // Called by the init
+  generateLifes() {
+    for (let i = 0; i < this.playerMaxLifes; i++) {
+      let el = document.createElement('div');
+      el.className = "heart";
+      this.lifesDOMContainer.appendChild(el);
+    }
+  }
+
+  removeALife() {
+    let lifeNode = this.lifesDOMContainer.lastChild;
+    if ( lifeNode ) { lifeNode.remove() }
+  }
+
   /**
    * GENERATE A GAME - CALL #1
    */
@@ -360,6 +383,8 @@ class Game {
 
     this.generateGroundTiles();
 
+    this.generateLifes();
+
     this.listenToControls();
 
     requestAnimationFrame((timestamp) => {
@@ -367,19 +392,25 @@ class Game {
     })
   }
 
-  endGame(youWin) {
+  stopGameLoop() {
+    console.log("stopGameLoop !");
+
     this.running = false;
 
-    if (this.currentLoopId) {
-      cancelAnimationFrame(this.currentLoopId);
-    }
+    if (this.currentTimeoutId) { clearTimeout(this.currentTimeoutId) }
+    if (this.currentLoopId) { cancelAnimationFrame(this.currentLoopId) }
 
+    // One last call
+    // this.gameLoop(new Date().getTime, true);
+
+  }
+
+  endScreen(youWin) {
     if (youWin) {
-      alert("YOU WIN !")
+      console.log("YOU WIN !")
     } else {
-      alert("BIG FAT LOOSER !")
+      console.log("BIG FAT LOOSER !")
     }
-
   }
 
 }
