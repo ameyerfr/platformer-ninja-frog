@@ -116,11 +116,16 @@ window.onload = function() {
 
   });
 
-  document.getElementById('sb1').addEventListener("click", function () {
+  document.getElementById('button-play').addEventListener("click", function () {
+    game.sound.playSound("menuclick");
     game.hideStartSplash();
     document.getElementById('life-container').style.visibility = 'visible';
-    game.sound.playSound("menuclick");
     startThisDamnGame();
+  });
+
+  document.getElementById('button-playagain').addEventListener("click", function () {
+    game.sound.playSound("menuclick");
+    document.location.reload(true);
   });
 
   function startThisDamnGame () {

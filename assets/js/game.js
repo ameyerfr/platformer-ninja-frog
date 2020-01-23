@@ -23,6 +23,7 @@ class Game {
     this.groundElement    = document.getElementById('ground');
     this.overlayDOMEl     = document.getElementById('overlay');
     this.splashStartDOMEl = document.getElementById('splash-start');
+    this.splashEndDOMEl = document.getElementById('splash-end');
   }
 
   controlsHandler(e) {
@@ -360,6 +361,7 @@ class Game {
 
   displayStartSplash() {
 
+    this.overlayDOMEl.style.display = "flex";
     this.overlayDOMEl.innerHTML = "";
 
     this.splashStartDOMEl.querySelector('#st1').style.visibility = 'visible';
@@ -376,7 +378,7 @@ class Game {
     }, 1600)
 
     setTimeout(() => {
-      this.splashStartDOMEl.querySelector('#sb1').style.visibility = 'visible';
+      this.splashStartDOMEl.querySelector('#button-play').style.visibility = 'visible';
       this.sound.playSound("shortbang2");
     }, 2400)
   }
@@ -384,6 +386,26 @@ class Game {
   hideStartSplash() {
     this.overlayDOMEl.style.display = 'none';
     this.splashStartDOMEl.style.display = 'none';
+  }
+
+  displayEndSplash(youWin) {
+
+    this.overlayDOMEl.style.display = "flex";
+    this.splashEndDOMEl.querySelector('#se2').innerHTML = youWin ? 'WIN' : 'LOOSE';
+
+    this.splashEndDOMEl.querySelector('#se1').style.visibility = 'visible';
+    this.sound.playSound("shortbang");
+
+    setTimeout(() => {
+      this.splashEndDOMEl.querySelector('#se2').style.visibility = 'visible';
+      this.sound.playSound("shortbang2");
+    }, 800)
+
+    setTimeout(() => {
+      this.splashEndDOMEl.querySelector('#button-playagain').style.visibility = 'visible';
+      this.sound.playSound("shortbang");
+    }, 1600)
+
   }
 
   /**
@@ -440,11 +462,11 @@ class Game {
 
   endScreen(youWin) {
     if (youWin) {
-      console.log("YOU WIN !")
+      this.displayEndSplash(youWin);
       this.sound.stopSound("theme");
       this.sound.playSound("victory");
     } else {
-      console.log("BIG FAT LOOSER !")
+      this.displayEndSplash(youWin);
       this.sound.stopSound("theme");
       this.sound.playSound("gameover");
     }
