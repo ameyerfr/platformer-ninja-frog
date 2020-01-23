@@ -20,7 +20,9 @@ class Game {
       jump  : { active : false, pressed : false }
     };
 
-    this.groundElement = document.getElementById('ground');
+    this.groundElement    = document.getElementById('ground');
+    this.overlayDOMEl     = document.getElementById('overlay');
+    this.splashStartDOMEl = document.getElementById('splash-start');
   }
 
   controlsHandler(e) {
@@ -175,10 +177,14 @@ class Game {
             jumping : true
           })
 
+          this.sound.playSound("mushjump");
+
         // ELSE, touch enemy => dmg !
         } else {
           player.getHurt(1);
           this.removeALife();
+
+          this.sound.playSound("hurt");
         }
 
       }
@@ -190,6 +196,7 @@ class Game {
     if ( !item.hidden && player.isColliding(item, 'item') ) {
       item.isGrabbed();
       this.totalItemsGrabbed++;
+      this.sound.playSound("pickitem");
     }
   }
 
@@ -267,6 +274,7 @@ class Game {
     if ( this.controls.jump.active )  {
       this.world.player.jump();
       this.controls.jump.active = false;
+      this.sound.playSound("frogjump");
     }
 
     this.updateWorld();
@@ -342,11 +350,40 @@ class Game {
       el.className = "heart";
       this.lifesDOMContainer.appendChild(el);
     }
+    this.lifesDOMContainer.style.visibility = 'visible';
   }
 
   removeALife() {
     let lifeNode = this.lifesDOMContainer.lastChild;
     if ( lifeNode ) { lifeNode.remove() }
+  }
+
+  displayStartSplash() {
+
+    this.overlayDOMEl.innerHTML = "";
+
+    this.splashStartDOMEl.querySelector('#st1').style.visibility = 'visible';
+    this.sound.playSound("shortbang");
+
+    setTimeout(() => {
+      this.splashStartDOMEl.querySelector('#st2').style.visibility = 'visible';
+      this.sound.playSound("shortbang2");
+    }, 800)
+
+    setTimeout(() => {
+      this.splashStartDOMEl.querySelector('#st3').style.visibility = 'visible';
+      this.sound.playSound("shortbang");
+    }, 1600)
+
+    setTimeout(() => {
+      this.splashStartDOMEl.querySelector('#sb1').style.visibility = 'visible';
+      this.sound.playSound("shortbang2");
+    }, 2400)
+  }
+
+  hideStartSplash() {
+    this.overlayDOMEl.style.display = 'none';
+    this.splashStartDOMEl.style.display = 'none';
   }
 
   /**
@@ -381,10 +418,6 @@ class Game {
    */
   init() {
 
-    this.generateGroundTiles();
-
-    this.generateLifes();
-
     this.listenToControls();
 
     requestAnimationFrame((timestamp) => {
@@ -408,8 +441,12 @@ class Game {
   endScreen(youWin) {
     if (youWin) {
       console.log("YOU WIN !")
+      this.sound.stopSound("theme");
+      this.sound.playSound("victory");
     } else {
       console.log("BIG FAT LOOSER !")
+      this.sound.stopSound("theme");
+      this.sound.playSound("gameover");
     }
   }
 

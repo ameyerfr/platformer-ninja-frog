@@ -1,10 +1,24 @@
 window.onload = function() {
-  // let map = document.getElementById('map-container');
-  // let player = document.getElementById('player');
-  // let hurtBox = document.getElementById('player-hurtbox');
-  // let obstacles = map.querySelectorAll('.obstacle');
+  let windowclicked = false;
 
   window.game = new Game();
+
+  window.game.sound = new SoundController({
+    sounds:[
+      { name : "theme", src : "assets/sound/mushroom-theme.mp3", loop:true, vol:0.5 },
+      { name : "shortbang", src : "assets/sound/sfx_wpn_cannon2.wav" },
+      // Same one so that we can overlap
+      { name : "shortbang2", src : "assets/sound/sfx_wpn_cannon2.wav" },
+      { name : "longbang", src : "assets/sound/sfx_exp_cluster1.wav" },
+      { name : "menuclick", src : "assets/sound/sfx_menu_select2.wav" },
+      { name : "pickitem", src : "assets/sound/sfx_coin_double7.wav" },
+      { name : "frogjump", src : "assets/sound/sfx_movement_jump10.wav"},
+      { name : "mushjump", src : "assets/sound/sfx_movement_jump8.wav" },
+      { name : "hurt", src : "assets/sound/sfx_sounds_damage3.wav" },
+      { name : "gameover", src : "assets/sound/gameover.ogg" },
+      { name : "victory", src : "assets/sound/victory.mp3" }
+    ]
+  });
 
   let froggy = new Character({
     name:'froggy',
@@ -59,6 +73,7 @@ window.onload = function() {
     jumpHeight:15
   });
 
+  window.game.generateGroundTiles();
 
   window.game.generateObstacles([
     {type:'hardblock-v',  left:250, bottom:0},
@@ -89,20 +104,47 @@ window.onload = function() {
     {id:99, type:'platform',     h:10, w:96, left:550, bottom:480, animate:{keys:[{transform:'translateX(50px)'},{transform:'translateX(-50px)'}], duration:4000} }
   ])
 
-  window.game.generateItems([
-    { type:'apple', left: 150, bottom: 10 },
-    { type:'apple', left: 350, bottom: 10 },
-    { type:'apple', left: 800, bottom: 10 },
-    { type:'apple', left: 40, bottom: 160 },
-    { type:'apple', left: 750, bottom: 400 },
-    { type:'apple', left: 850, bottom: 500 },
-    { type:'apple', left: 40, bottom: 400 }
-  ])
+  // VERY START - ON SCREEN CLICK
+  // THIS IS SO THAT THE BROWSER DOESNT INTERCEPT THE SOUND
+  document.body.addEventListener("click", function () {
 
-  window.game.addPlayer(froggy);
-  window.game.addEnemy(mushroom1);
-  window.game.addEnemy(mushroom2);
-  window.game.addEnemy(mushroom3);
+    // Avoid multiple clicks
+    if(windowclicked) { return; }
+    windowclicked = true;
 
-  window.game.init();
+    game.displayStartSplash();
+
+  });
+
+  document.getElementById('sb1').addEventListener("click", function () {
+    game.hideStartSplash();
+    document.getElementById('life-container').style.visibility = 'visible';
+    game.sound.playSound("menuclick");
+    startThisDamnGame();
+  });
+
+  function startThisDamnGame () {
+
+    window.game.generateItems([
+      { type:'apple', left: 150, bottom: 10 },
+      { type:'apple', left: 350, bottom: 10 },
+      { type:'apple', left: 800, bottom: 10 },
+      { type:'apple', left: 40, bottom: 160 },
+      { type:'apple', left: 750, bottom: 400 },
+      { type:'apple', left: 850, bottom: 500 },
+      { type:'apple', left: 40, bottom: 400 }
+    ])
+
+    window.game.addPlayer(froggy);
+    window.game.addEnemy(mushroom1);
+    window.game.addEnemy(mushroom2);
+    window.game.addEnemy(mushroom3);
+
+    window.game.generateLifes();
+
+    game.sound.playSound("theme");
+    window.game.init();
+
+  }
+
 }
