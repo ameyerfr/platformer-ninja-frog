@@ -205,6 +205,18 @@ body {
   margin-left:-8px;
 }
 
+@keyframes shurikenMove {
+  100% { transform: rotate(360deg) }
+}
+
+.shuriken {
+  animation: shurikenMove 2s ease alternate infinite;
+  background-image:url("../sprites/shuriken.png");
+  background-size: 36px;
+  width:36px;
+  height:36px;
+}
+
 /**
  * ======= CHARACTERS =======
  */

@@ -126,13 +126,13 @@ window.onload = function() {
   function startThisDamnGame () {
 
     window.game.generateItems([
-      { type:'apple', left: 150, bottom: 10 },
-      { type:'apple', left: 350, bottom: 10 },
-      { type:'apple', left: 800, bottom: 10 },
-      { type:'apple', left: 40, bottom: 160 },
-      { type:'apple', left: 750, bottom: 400 },
-      { type:'apple', left: 850, bottom: 500 },
-      { type:'apple', left: 40, bottom: 400 }
+      { type:'shuriken', left: 150, bottom: 10 },
+      { type:'shuriken', left: 350, bottom: 10 },
+      { type:'shuriken', left: 800, bottom: 10 },
+      { type:'shuriken', left: 40, bottom: 160 },
+      { type:'shuriken', left: 750, bottom: 380 },
+      { type:'shuriken', left: 850, bottom: 500 },
+      { type:'shuriken', left: 20, bottom: 400 }
     ])
 
     window.game.addPlayer(froggy);
