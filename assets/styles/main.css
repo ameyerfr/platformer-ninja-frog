@@ -1,6 +1,6 @@
 @font-face {
  font-family: "RPGSystem";
- src: url("assets/fonts/RPGSystem.ttf") format("truetype");
+ src: url("../fonts/RPGSystem.ttf") format("truetype");
 }
 
 * {
@@ -21,7 +21,7 @@ body {
   width:100%;
   height:calc(100% - 45px);
   overflow: hidden;
-  background-image:url(assets/sprites/background-chevron.png);
+  background-image:url(../sprites/background-chevron.png);
   background-repeat: repeat;
   background-size:150px;
 }
@@ -32,7 +32,7 @@ body {
 
 #background {
   position: absolute;
-  background-image:url(assets/sprites/fantasy-clouds.png);
+  background-image:url(../sprites/fantasy-clouds.png);
   background-position-y:-30%;
   width:200%;
   height:100%;
@@ -53,7 +53,7 @@ body {
   position:absolute;
   width:45px;
   height:45px;
-  background:url(assets/sprites/terrain.png) -98px -176px;
+  background:url(../sprites/terrain.png) -98px -176px;
 }
 
 #life-container {
@@ -76,7 +76,7 @@ body {
 }
 
 .heart {
-  background-image:url(assets/sprites/heart.png);
+  background-image:url(../sprites/heart.png);
   width:32px;
   height:32px;
   margin:0 5px;
@@ -90,7 +90,7 @@ body {
 }
 
 .hardblock-32 {
-  background-image:url(assets/sprites/terrain.png);
+  background-image:url(../sprites/terrain.png);
   background-position-y:calc(-16px*2);
   background-position-x:calc(160px*2);
   background-size: calc(352px*2);
@@ -99,7 +99,7 @@ body {
 }
 
 .hardblock-64 {
-  background-image:url(assets/sprites/terrain.png);
+  background-image:url(../sprites/terrain.png);
   background-position-y:calc(-16px*2);
   background-position-x:calc(144px*2);
   background-size: calc(352px*2);
@@ -109,7 +109,7 @@ body {
 
 /* Horizontal hardblock 32px by 96px */
 .hardblock-h {
-  background-image:url(assets/sprites/terrain.png);
+  background-image:url(../sprites/terrain.png);
   background-position-y:calc(0px*2);
   background-position-x:calc(160px*2);
   background-size: calc(352px*2);
@@ -119,7 +119,7 @@ body {
 
 /* Horizontal hardblock 96px by 32px */
 .hardblock-v {
-  background-image:url(assets/sprites/terrain.png);
+  background-image:url(../sprites/terrain.png);
   background-position-y:calc(0px*2);
   background-position-x:calc(112px*2);
   background-size: calc(352px*2);
@@ -129,7 +129,7 @@ body {
 
 
 .platform {
-  background-image:url(assets/sprites/terrain.png);
+  background-image:url(../sprites/terrain.png);
   background-position-y:calc(-16px*2);
   background-position-x:calc(80px*2);
   background-size: calc(352px*2);
@@ -146,7 +146,7 @@ body {
 }
 
 .apple {
-  background-image:url(assets/sprites/apple.png);
+  background-image:url(../sprites/apple.png);
   background-position-y:-5px;
   background-size: 544px;
   animation: appleMove 2s steps(17) infinite;
@@ -192,21 +192,21 @@ body {
 }
 
 .froggy.idling {
-  background-image:url(assets/sprites/frog/idle.png);
+  background-image:url(../sprites/frog/idle.png);
   animation: froggyidling 1s steps(11) infinite;
 }
 
 .froggy.moving {
-  background-image:url(assets/sprites/frog/run.png);
+  background-image:url(../sprites/frog/run.png);
   animation: froggymoving 0.5s steps(12) infinite;
 }
 
 .froggy.jumping {
-  background-image:url(assets/sprites/frog/jump.png);
+  background-image:url(../sprites/frog/jump.png);
 }
 
 .froggy.hurt {
-  background-image:url(assets/sprites/frog/hit.png);
+  background-image:url(../sprites/frog/hit.png);
   animation: froggyhurt 0.3s steps(7) infinite;
 }
 
@@ -231,16 +231,16 @@ body {
 }
 
 .mushroom.jumping {
-  background-image:url(assets/sprites/mushroom/run.png);
+  background-image:url(../sprites/mushroom/run.png);
   background-position-x:0px;
 }
 .mushroom.idling {
-  background-image:url(assets/sprites/mushroom/idle.png);
+  background-image:url(../sprites/mushroom/idle.png);
   animation: mushroomidling 1s steps(14) infinite;
 }
 
 .mushroom.moving {
-  background-image:url(assets/sprites/mushroom/run.png);
+  background-image:url(../sprites/mushroom/run.png);
   animation: mushroommoving 0.5s steps(16) infinite;
 }
 
