@@ -13,4 +13,9 @@ class Item extends Obstacle {
     this.DOMcontainer.style.display = 'none';
   }
 
+  show() {
+    this.hidden = false;
+    this.DOMcontainer.style.display = 'block';
+  }
+  
 }

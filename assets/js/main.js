@@ -112,20 +112,33 @@ window.onload = function() {
     if(windowclicked) { return; }
     windowclicked = true;
 
-    game.displayStartSplash();
+    // If game was reload from end splash
+    // Dont show start splash
+    let reloaded = new URL(window.location.href).searchParams.get("reload");
+    if (reloaded) {
+      window.game.overlayDOMEl.style.display = 'none';
+      window.game.hideStartSplash();
+      startThisDamnGame();
+    } else {
+      window.game.displayStartSplash();
+    }
 
   });
 
   document.getElementById('button-play').addEventListener("click", function () {
-    game.sound.playSound("menuclick");
-    game.hideStartSplash();
-    document.getElementById('life-container').style.visibility = 'visible';
+    window.game.sound.playSound("menuclick");
+    window.game.hideStartSplash();
     startThisDamnGame();
   });
 
   document.getElementById('button-playagain').addEventListener("click", function () {
-    game.sound.playSound("menuclick");
-    document.location.reload(true);
+    window.game.sound.playSound("menuclick");
+
+    // When clicking play again
+    let url = window.location.href;
+    if (url.indexOf('?') === -1) { url += '?reload=1' }
+    window.location.href = url;
+
   });
 
   function startThisDamnGame () {
@@ -147,7 +160,7 @@ window.onload = function() {
 
     window.game.generateLifes();
 
-    game.sound.playSound("theme");
+    window.game.listenToControls();
     window.game.init();
 
   }

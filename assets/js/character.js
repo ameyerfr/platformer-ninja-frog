@@ -42,16 +42,12 @@ class Character {
      // Reset states array with base states
      this.currentStates = [...this.baseStates];
 
-     // If last time hurt was less than 300ms,
+     // While hurting
      // Keep pushing 'hurt' into currentStates
      // So that we have the CSS class hurt
      // And then the CSS animation has time to play
-     if ( this.lastTimeHurt ) {
-       let now = new Date().getTime();
-       var timeDiff = now - this.lastTimeHurt; //in ms
-       if ( timeDiff < 300 ) {
-         this.currentStates.push('hurt');
-       } else { this.lastTimeHurt = null; }
+     if (this.stillHurting()) {
+       this.currentStates.push('hurt');
      }
 
    }
@@ -89,6 +85,25 @@ class Character {
      this.lastTimeHurt = new Date().getTime();
      this.currentStates.push('hurt');
      this.speed_x = this.direction === 'right' ? -20 : 20;
+
+   }
+
+   stillHurting() {
+
+     // If last time hurt was less than 300ms,
+     // Keep pushing 'hurt' into currentStates
+     // So that we have the CSS class hurt
+     // And then the CSS animation has time to play
+     if ( this.lastTimeHurt ) {
+       let now = new Date().getTime();
+       var timeDiff = now - this.lastTimeHurt; //in ms
+       if ( timeDiff < 300 ) {
+         return true;
+       } else {
+         this.lastTimeHurt = null;
+         return false;
+       }
+     }
 
    }
 

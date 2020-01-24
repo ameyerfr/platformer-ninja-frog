@@ -34,6 +34,7 @@ class Game {
       case 'ArrowLeft'  : this.updateControls('left', pressed); break;
       case 'ArrowRight' : this.updateControls('right', pressed); break;
       case 'Space'      : this.updateControls('jump', pressed); break;
+      case 'ArrowUp'    : this.updateControls('jump', pressed); break;
     }
 
   }
@@ -182,10 +183,11 @@ class Game {
 
         // ELSE, touch enemy => dmg !
         } else {
-          player.getHurt(1);
-          this.removeALife();
-
-          this.sound.playSound("hurt");
+          if (!player.stillHurting()) {
+            player.getHurt(1);
+            this.removeALife();
+            this.sound.playSound("hurt");
+          }
         }
 
       }
@@ -389,9 +391,10 @@ class Game {
   }
 
   displayEndSplash(youWin) {
-
     this.overlayDOMEl.style.display = "flex";
-    this.splashEndDOMEl.querySelector('#se2').innerHTML = youWin ? 'WIN' : 'LOOSE';
+    this.overlayDOMEl.innerHTML = "";
+
+    this.splashEndDOMEl.querySelector('#se2').innerHTML = youWin ? 'WIN' : 'LOSE';
 
     this.splashEndDOMEl.querySelector('#se1').style.visibility = 'visible';
     this.sound.playSound("shortbang");
@@ -406,6 +409,11 @@ class Game {
       this.sound.playSound("shortbang");
     }, 1600)
 
+  }
+
+  hideSplashEnd() {
+    this.overlayDOMEl.style.display = 'none';
+    this.splashEndDOMEl.style.display = 'none';
   }
 
   /**
@@ -430,6 +438,8 @@ class Game {
       this.world.items.push(new Item(item_config))
     })
 
+    document.getElementById('life-container').style.visibility = 'visible';
+
     this.totalItems = this.world.items.length;
     this.totalItemsGrabbed = 0;
 
@@ -440,7 +450,7 @@ class Game {
    */
   init() {
 
-    this.listenToControls();
+    this.sound.playSound("theme");
 
     requestAnimationFrame((timestamp) => {
       this.gameLoop(timestamp);
@@ -461,13 +471,13 @@ class Game {
   }
 
   endScreen(youWin) {
+    this.sound.stopSound("theme");
+
     if (youWin) {
       this.displayEndSplash(youWin);
-      this.sound.stopSound("theme");
       this.sound.playSound("victory");
     } else {
       this.displayEndSplash(youWin);
-      this.sound.stopSound("theme");
       this.sound.playSound("gameover");
     }
   }
