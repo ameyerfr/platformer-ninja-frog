@@ -289,7 +289,7 @@ class Game {
       // Limited FPS
       this.currentTimeoutId = setTimeout(this.currentLoopId = requestAnimationFrame((timestamp) => {
         this.gameLoop(timestamp);
-      }), 1000/60)
+      }), 1000/30)
 
       // Maximum FPS
       // this.currentLoopId = requestAnimationFrame((timestamp) => {
