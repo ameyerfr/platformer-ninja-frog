@@ -125,10 +125,10 @@ var gameConfig = {
     {type:'hardblock-h',  left:164, bottom:684},
     {type:'hardblock-h',  left:70, bottom:684},
 
-    {id:90, type:'platform',     h:10, w:96, left:850, bottom:170, animate:{keys:[{transform:'translateX(50px)'},{transform:'translateX(-200px)'}], duration:5000} },
-    {id:91, type:'platform',     h:10, w:96, left:850, bottom:330, animate:{keys:[{transform:'translateX(-200px)'},{transform:'translateX(50px)'}], duration:5000} },
+    {id:90, type:'platform',     h:10, w:96, left:850, bottom:150, animate:{keys:[{transform:'translateX(120px)'},{transform:'translateX(-250px)'}], duration:5000} },
+    {id:91, type:'platform',     h:10, w:96, left:850, bottom:310, animate:{keys:[{transform:'translateX(-200px)'},{transform:'translateX(50px)'}], duration:5000} },
     {id:92, type:'platform',     h:10, w:96, left:1700, bottom:350, animate:{keys:[{transform:'translateX(-100px)'},{transform:'translateX(100px)'}], duration:5000} },
-    {id:92, type:'platform',     h:10, w:96, left:850, bottom:490, animate:{keys:[{transform:'translateX(50px)'},{transform:'translateX(-200px)'}], duration:5000} }
+    {id:92, type:'platform',     h:10, w:96, left:850, bottom:450, animate:{keys:[{transform:'translateX(50px)'},{transform:'translateX(-200px)'}], duration:5000} }
   ],
 
   items : [
